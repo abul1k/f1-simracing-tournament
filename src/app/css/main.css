@@ -1,0 +1,10 @@
+@import "./tailwind.css";
+@import "../../shared/css/fonts.css";
+
+body {
+  padding: 0;
+  margin: 0;
+  color: #121212;
+  font-family: 'Titillium Web', sans-serif;
+  background: #0a0a0b;
+}
