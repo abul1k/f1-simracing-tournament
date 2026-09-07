@@ -88,7 +88,9 @@ const constructorFields: TableField[] = [
   },
 ]
 
-const tableWidth = computed(() => `${584 + completedRounds.value.length * 56}px`)
+const tableWidth = computed(
+  () => `${584 + completedRounds.value.length * 56}px`,
+)
 
 const resultClass = (value: RoundResult, pos: number) => {
   if (isRetired(value)) return 'font-semibold text-[#C13B33]'
@@ -203,9 +205,12 @@ const resultClass = (value: RoundResult, pos: number) => {
       </template>
 
       <template #cell(drivers)="{ value }">
-        <span class="truncate text-[12px] text-[#9C9CA1]">{{
-          value.join(' · ')
-        }}</span>
+        <span
+          class="truncate text-[12px] text-[#9C9CA1] block"
+          v-for="driver in value"
+          :key="driver"
+          >{{ driver }}</span
+        >
       </template>
 
       <template #cell(pts)="{ item, value }">
