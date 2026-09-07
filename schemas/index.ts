@@ -19,7 +19,9 @@ const LAP_TIME_PATTERN = /^\d+:\d{2}\.\d{3}$/
 const HEX_COLOR_PATTERN = /^#[0-9A-Fa-f]{6}$/
 
 export const SESSION_STATUSES = ['pending', 'completed'] as const
-export const RACE_RESULT_STATUSES = ['finished', 'dnf', 'dsq'] as const
+export const RACE_RESULT_STATUSES = ['finished', 'dnf', 'dsq', 'dns'] as const
+/** Only set on a qualifying entry with no lap time; omitted for a timed lap. */
+export const QUALIFYING_RESULT_STATUSES = ['dnf', 'dsq'] as const
 export const RACE_TYPES = ['FEATURE RACE', 'SPRINT RACE'] as const
 export const CHAMPIONSHIP_STATUSES = ['active', 'completed', 'upcoming'] as const
 export const FASTEST_LAP_ELIGIBILITY = ['top10', 'any'] as const
@@ -108,10 +110,15 @@ export const roundSchema: Spec = {
           kind: 'array',
           of: {
             kind: 'object',
+            // `status` says why an entry has no lap time; validateData
+            // requires one whenever `time` is empty.
+            optional: ['status'],
             fields: {
               driverId: { kind: 'string', pattern: /^DRV\d{3}$/ },
               position: { kind: 'number', integer: true, min: 1 },
-              time: { kind: 'string', pattern: LAP_TIME_PATTERN },
+              // Empty for a driver who set no lap time — see `status`.
+              time: { kind: 'string', pattern: LAP_TIME_PATTERN, allowEmpty: true },
+              status: { kind: 'string', enum: QUALIFYING_RESULT_STATUSES },
             },
           },
         },
@@ -130,10 +137,11 @@ export const roundSchema: Spec = {
             optional: ['fastestLap', 'points'],
             fields: {
               driverId: { kind: 'string', pattern: /^DRV\d{3}$/ },
-              // null for a `dnf`/`dsq`; validateData requires a number when the
-              // driver is `finished`.
+              // null for a `dnf`/`dsq`/`dns`; validateData requires a number when
+              // the driver is `finished`.
               position: { kind: 'number', integer: true, min: 1, nullable: true },
-              gridPosition: { kind: 'number', integer: true, min: 1 },
+              // null when the driver took no grid slot, e.g. a `dns`.
+              gridPosition: { kind: 'number', integer: true, min: 1, nullable: true },
               status: { kind: 'string', enum: RACE_RESULT_STATUSES },
               fastestLap: { kind: 'boolean' },
               points: { kind: 'number', integer: true, min: 0 },

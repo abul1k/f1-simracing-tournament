@@ -156,6 +156,17 @@ listRoundFiles().forEach((file) => {
     })
   })
 
+  // A qualifying entry with no lap time must say why it has none.
+  round.qualifying?.results?.forEach((result, index) => {
+    if (result.time || result.status) return
+
+    add(
+      file,
+      `qualifying.results[${index}].time`,
+      `driver "${result.driverId}" has no lap time — enter one, or add "status": "dnf" or "dsq"`,
+    )
+  })
+
   // A driver recorded as finishing must have a finishing position.
   round.race?.results?.forEach((result, index) => {
     if (result.status === 'finished' && typeof result.position !== 'number') {

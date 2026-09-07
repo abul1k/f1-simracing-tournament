@@ -2,7 +2,10 @@ export type RaceType = 'FEATURE RACE' | 'SPRINT RACE'
 
 export type SessionStatus = 'pending' | 'completed'
 
-export type RaceResultStatus = 'finished' | 'dnf' | 'dsq'
+export type RaceResultStatus = 'finished' | 'dnf' | 'dsq' | 'dns'
+
+/** Marks a qualifying entry that set no lap time. Absent means a clean timed lap. */
+export type QualifyingResultStatus = 'dnf' | 'dsq'
 
 /** One scheduled round, as listed in `data/calendar.json`. */
 export interface CalendarRound {
@@ -16,14 +19,21 @@ export interface CalendarRound {
 export interface QualifyingResult {
   driverId: string
   position: number
+  /** `M:SS.mmm`, or empty for a driver who set no time — see `status`. */
   time: string
+  /** Omitted for a driver who set a time; `dnf`/`dsq` leaves `time` empty. */
+  status?: QualifyingResultStatus
 }
+
+/** True when a qualifying entry has no lap time to show. */
+export const hasNoLapTime = (result: QualifyingResult): boolean => !result.time
 
 export interface RaceResult {
   driverId: string
-  /** null for a retirement — a `dnf`/`dsq` has no classified finishing position. */
+  /** null for a retirement — a `dnf`/`dsq`/`dns` has no classified finishing position. */
   position: number | null
-  gridPosition: number
+  /** null when the driver took no grid slot, e.g. a `dns`. */
+  gridPosition: number | null
   status: RaceResultStatus
   fastestLap: boolean
   points: number
@@ -47,10 +57,10 @@ export interface Round {
 }
 
 /** A finishing position, or a retirement marker, or `—` for a round not yet run. */
-export type RoundOutcome = number | 'DNF' | 'DSQ' | '—'
+export type RoundOutcome = number | 'DNF' | 'DSQ' | 'DNS' | '—'
 
-export const isRetired = (value: RoundOutcome): value is 'DNF' | 'DSQ' =>
-  value === 'DNF' || value === 'DSQ'
+export const isRetired = (value: RoundOutcome): value is 'DNF' | 'DSQ' | 'DNS' =>
+  value === 'DNF' || value === 'DSQ' || value === 'DNS'
 
 /** A classified finisher — guaranteed to carry a finishing position. */
 export type ClassifiedResult = RaceResult & { position: number }
@@ -67,6 +77,7 @@ export const isPodiumFinish = (result: RaceResult): result is ClassifiedResult =
 export const outcomeOf = (result: RaceResult): RoundOutcome => {
   if (result.status === 'dnf') return 'DNF'
   if (result.status === 'dsq') return 'DSQ'
+  if (result.status === 'dns') return 'DNS'
 
   return result.position ?? '—'
 }

@@ -13,7 +13,14 @@ export interface Issue {
 }
 
 export type Spec =
-  | { kind: 'string'; enum?: readonly string[]; pattern?: RegExp; minLength?: number }
+  | {
+      kind: 'string'
+      enum?: readonly string[]
+      pattern?: RegExp
+      minLength?: number
+      /** Accepts `""` as a deliberate "no value", skipping the other checks. */
+      allowEmpty?: boolean
+    }
   | { kind: 'number'; integer?: boolean; min?: number; max?: number; nullable?: boolean }
   | { kind: 'boolean' }
   | { kind: 'array'; of: Spec; minItems?: number }
@@ -58,6 +65,8 @@ export const validate = (
     if (typeof value !== 'string') {
       return fail(`must be a string, got ${typeName(value)}`)
     }
+    if (spec.allowEmpty && value === '') return
+
     if (spec.enum && !spec.enum.includes(value)) {
       return fail(`must be one of ${spec.enum.join(', ')} — got ${show(value)}`)
     }

@@ -1,5 +1,6 @@
 import { computed, type ComputedRef } from 'vue'
 import { useDriversStore } from '@/entities/driver/model/store'
+import { outcomeOf } from '@/entities/round/model'
 import { useRoundsStore } from '@/entities/round/model/store'
 import { useStandingsStore } from '@/entities/standings/model/store'
 import { useTeamsStore } from '@/entities/team/model/store'
@@ -111,12 +112,7 @@ export const useDriverHistory = (
 
       cumulative += race.points
 
-      const finish =
-        race.status === 'dnf'
-          ? 'DNF'
-          : race.status === 'dsq'
-            ? 'DSQ'
-            : (race.position ?? '—')
+      const finish = outcomeOf(race)
 
       return [
         {

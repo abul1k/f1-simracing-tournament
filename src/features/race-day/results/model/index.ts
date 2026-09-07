@@ -13,10 +13,14 @@ export interface SessionResultRow {
   code: string
   teamId: string
   team: string
-  /** Qualifying only — race results carry no lap time in `data/rounds/`. */
+  /**
+   * Qualifying only — race results carry no lap time in `data/rounds/`.
+   * Empty for a driver who set no time; `status` says why.
+   */
   time?: string
-  /** Race only — the driver's starting position. */
-  grid?: number
+  /** Race only — the driver's starting position, null for a driver who never started. */
+  grid?: number | null
+  /** `DNF`/`DSQ`/`DNS`, or empty for a clean lap or a classified finish. */
   status?: string
   /** Race only — championship points scored, fastest-lap bonus included. */
   points?: number
@@ -34,8 +38,9 @@ const QUALIFYING_KEYS = ['qualifying', 'sprint-qualifying']
 /** Session keys that read a round's race classification. */
 const RACE_KEYS = ['race', 'sprint']
 
-const statusLabel = (status: string): string =>
-  status === 'finished' ? '' : status.toUpperCase()
+/** `dnf` → `DNF`; a clean result has nothing to flag. */
+const statusLabel = (status?: string): string =>
+  !status || status === 'finished' ? '' : status.toUpperCase()
 
 /**
  * Classification rows for one session of one round.
@@ -77,7 +82,9 @@ export const useSessionResults = (
       return rounds.getQualifyingResults(number).map((result) => ({
         pos: result.position,
         ...describe(result.driverId),
+        // Empty when the driver set no time — the table falls back to `status`.
         time: result.time,
+        status: statusLabel(result.status),
       }))
     }
 

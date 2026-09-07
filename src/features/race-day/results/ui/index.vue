@@ -69,6 +69,9 @@ const fields = computed<TableField[]>(() => [
       ]),
 ])
 
+/** A qualifying entry with no lap time shows its DNF/DSQ marker instead. */
+const noTimeLabel = (row: SessionResultRow) => row.status || 'NO TIME'
+
 /** Points before the fastest-lap bonus, so the bonus can be shown separately. */
 const basePoints = (row: SessionResultRow) =>
   (row.points ?? 0) - (row.bonus ?? 0)
@@ -141,6 +144,19 @@ const basePoints = (row: SessionResultRow) =>
             item.code
           }}</span>
         </div>
+      </template>
+
+      <template #cell(time)="{ item }">
+        <span v-if="item.time">{{ item.time }}</span>
+        <span v-else class="font-sans text-[12px] font-semibold text-[#C13B33]">
+          {{ noTimeLabel(item) }}
+        </span>
+      </template>
+
+      <template #cell(grid)="{ item }">
+        <span :class="item.grid === null && 'text-[#68686D]'">
+          {{ item.grid ?? '—' }}
+        </span>
       </template>
 
       <template #cell(points)="{ item }">

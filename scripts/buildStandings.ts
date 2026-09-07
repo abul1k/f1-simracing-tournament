@@ -43,13 +43,14 @@ const roundNumbers = completedRounds.map((round) => round.round)
 const outcomeOf = (result: RaceResult): RoundOutcome => {
   if (result.status === 'dnf') return 'DNF'
   if (result.status === 'dsq') return 'DSQ'
+  if (result.status === 'dns') return 'DNS'
 
   return result.position ?? '—'
 }
 
 /**
  * Counts finishing positions, indexed by position (`counts[1]` = wins).
- * Only classified finishes count; a DNF or DSQ contributes nothing.
+ * Only classified finishes count; a DNF, DSQ or DNS contributes nothing.
  */
 const countbackOf = (results: RaceResult[]): number[] => {
   const counts: number[] = []
