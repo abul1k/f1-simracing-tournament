@@ -200,21 +200,22 @@ const computed = {
  * time, which turned each CI run into a new commit and left the file
  * conflicting on line 2 whenever two runs met in a pull.
  */
-const stampedAt = (): string => {
-  try {
-    const { generatedAt, ...previous } = readJson<Standings>(STANDINGS_FILE)
+// const stampedAt = (): string => {
+//   try {
+//     const { generatedAt, ...previous } = readJson<Standings>(STANDINGS_FILE)
 
-    if (generatedAt && JSON.stringify(previous) === JSON.stringify(computed)) {
-      return generatedAt
-    }
-  } catch {
-    // No readable previous standings — fall through and stamp a fresh time.
-  }
+//     if (generatedAt && JSON.stringify(previous) === JSON.stringify(computed)) {
+//       return generatedAt
+//     }
+//   } catch {
+//     // No readable previous standings — fall through and stamp a fresh time.
+//   }
 
-  return new Date().toISOString()
-}
+//   return new Date().toISOString()
+// }
 
-const standings: Standings = { generatedAt: stampedAt(), ...computed }
+// const standings: Standings = { generatedAt: stampedAt(), ...computed }
+const standings: Standings = { ...computed }
 
 writeJson(STANDINGS_FILE, standings)
 

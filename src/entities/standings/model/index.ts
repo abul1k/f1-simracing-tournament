@@ -20,7 +20,7 @@ export interface ConstructorStandingEntry {
 
 /** The generated `data/standings.json` — the only standings source the app reads. */
 export interface Standings {
-  generatedAt: string
+  // generatedAt: string
   roundsCompleted: number[]
   drivers: DriverStandingEntry[]
   constructors: ConstructorStandingEntry[]
