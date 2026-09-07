@@ -43,10 +43,21 @@ const year = new Date().getFullYear()
       </div>
 
       <div class="h-px w-full bg-[#2A2A2E]"></div>
-
-      <p class="text-[11px] font-normal text-[#68686D]">
-        © {{ year }} RACEFOR.FUN. All rights reserved.
-      </p>
+      <div class="flex items-center justify-between">
+        <p class="text-[11px] font-normal text-[#68686D]">
+          © {{ year }} RACEFOR.FUN. All rights reserved.
+        </p>
+        <p class="text-[13px] font-normal text-[#68686D]">
+          Made with ❤️ by
+          <a
+            href="https://t.me/theabdulazyz"
+            target="_blank"
+            class="text-[#9C9CA1] hover:text-[#F4F4F2]"
+          >
+            abyla
+          </a>
+        </p>
+      </div>
     </div>
   </footer>
 </template>
