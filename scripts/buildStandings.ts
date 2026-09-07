@@ -187,12 +187,34 @@ const constructorStandings: ConstructorStandingEntry[] = teams
   })
   .map(({ countback: _countback, ...entry }, index) => ({ ...entry, position: index + 1 }))
 
-const standings: Standings = {
-  generatedAt: new Date().toISOString(),
+const computed = {
   roundsCompleted: roundNumbers,
   drivers: driverStandings,
   constructors: constructorStandings,
 }
+
+/**
+ * Reuse the previous timestamp when nothing else changed, so re-running on
+ * unchanged data rewrites a byte-identical file. A fresh `new Date()` on every
+ * run made `data/standings.json` differ from its committed copy every single
+ * time, which turned each CI run into a new commit and left the file
+ * conflicting on line 2 whenever two runs met in a pull.
+ */
+const stampedAt = (): string => {
+  try {
+    const { generatedAt, ...previous } = readJson<Standings>(STANDINGS_FILE)
+
+    if (generatedAt && JSON.stringify(previous) === JSON.stringify(computed)) {
+      return generatedAt
+    }
+  } catch {
+    // No readable previous standings — fall through and stamp a fresh time.
+  }
+
+  return new Date().toISOString()
+}
+
+const standings: Standings = { generatedAt: stampedAt(), ...computed }
 
 writeJson(STANDINGS_FILE, standings)
 
