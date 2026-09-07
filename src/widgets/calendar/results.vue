@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ResultsUI from '@/features/race-day/results/ui/index.vue'
+import type { SessionResultRow } from '@/features/race-day/results/model'
 
 defineProps<{
   title?: string
@@ -7,6 +8,7 @@ defineProps<{
   country?: string
   date?: string
   round?: number
+  results: SessionResultRow[]
 }>()
 </script>
 
@@ -18,6 +20,7 @@ defineProps<{
       :country="country"
       :date="date"
       :round="round"
+      :results="results"
     />
   </div>
 </template>

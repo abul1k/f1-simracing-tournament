@@ -2,13 +2,13 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ScheduleWidget from '@/widgets/calendar/schedule.vue'
-import { defaultRounds } from '@/features/calendar/model'
+import { useRoundsStore } from '@/entities/round/model/store'
 
 const route = useRoute()
 
-const round = computed(() =>
-  defaultRounds.find((item) => item.round === Number(route.params.round)),
-)
+const rounds = useRoundsStore()
+
+const round = computed(() => rounds.getCalendarRound(Number(route.params.round)))
 </script>
 
 <template>

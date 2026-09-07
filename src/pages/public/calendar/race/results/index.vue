@@ -2,16 +2,23 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ResultsWidget from '@/widgets/calendar/results.vue'
-import { defaultRounds } from '@/features/calendar/model'
+import { useRoundsStore } from '@/entities/round/model/store'
+import { useSessionResults } from '@/features/race-day/results/model'
 import { getSession, longDate, raceTitle } from '@/features/race-day/schedule/model'
 
 const route = useRoute()
 
-const round = computed(() =>
-  defaultRounds.find((item) => item.round === Number(route.params.round)),
-)
+const rounds = useRoundsStore()
 
-const session = computed(() => getSession(round.value, route.params.session as string))
+const roundNumber = computed(() => Number(route.params.round))
+
+const round = computed(() => rounds.getCalendarRound(roundNumber.value))
+
+const sessionKey = computed(() => route.params.session as string)
+
+const session = computed(() => getSession(round.value, sessionKey.value))
+
+const results = useSessionResults(roundNumber, sessionKey)
 </script>
 
 <template>
@@ -21,5 +28,6 @@ const session = computed(() => getSession(round.value, route.params.session as s
     :country="round?.country"
     :date="round ? longDate(round.date) : undefined"
     :round="round?.round"
+    :results="results"
   />
 </template>

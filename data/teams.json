@@ -1,0 +1,62 @@
+[
+  {
+    "id": "TEAM_MER",
+    "name": "Mercedes",
+    "shortName": "MER",
+    "color": "#00D2BE"
+  },
+  {
+    "id": "TEAM_FER",
+    "name": "Ferrari",
+    "shortName": "FER",
+    "color": "#DC0000"
+  },
+  {
+    "id": "TEAM_RBR",
+    "name": "Red Bull Racing",
+    "shortName": "RBR",
+    "color": "#1E41FF"
+  },
+  {
+    "id": "TEAM_MCL",
+    "name": "McLaren",
+    "shortName": "MCL",
+    "color": "#FF8700"
+  },
+  {
+    "id": "TEAM_REN",
+    "name": "Renault",
+    "shortName": "REN",
+    "color": "#FFF500"
+  },
+  {
+    "id": "TEAM_RP",
+    "name": "Racing Point",
+    "shortName": "RP",
+    "color": "#F596C8"
+  },
+  {
+    "id": "TEAM_AT",
+    "name": "AlphaTauri",
+    "shortName": "AT",
+    "color": "#4E7C9B"
+  },
+  {
+    "id": "TEAM_HAS",
+    "name": "Haas",
+    "shortName": "HAS",
+    "color": "#B6BABD"
+  },
+  {
+    "id": "TEAM_ALF",
+    "name": "Alfa Romeo",
+    "shortName": "ALF",
+    "color": "#9B0000"
+  },
+  {
+    "id": "TEAM_WIL",
+    "name": "Williams",
+    "shortName": "WIL",
+    "color": "#00A0DE"
+  }
+]

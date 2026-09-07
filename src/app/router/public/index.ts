@@ -32,6 +32,38 @@ export default [
     component: () => import('@/pages/public/drivers/profile/index.vue'),
   },
   {
+    path: '/teams',
+    name: 'teams',
+    meta: {
+      layout: 'main',
+    },
+    component: () => import('@/pages/public/teams/index.vue'),
+  },
+  {
+    path: '/results',
+    name: 'results',
+    meta: {
+      layout: 'main',
+    },
+    component: () => import('@/pages/public/results/index.vue'),
+  },
+  {
+    path: '/statistics',
+    name: 'statistics',
+    meta: {
+      layout: 'main',
+    },
+    component: () => import('@/pages/public/statistics/index.vue'),
+  },
+  {
+    path: '/regulations',
+    name: 'regulations',
+    meta: {
+      layout: 'main',
+    },
+    component: () => import('@/pages/public/regulations/index.vue'),
+  },
+  {
     path: '/calendar',
     name: 'calendar',
     meta: {

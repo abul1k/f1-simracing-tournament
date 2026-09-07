@@ -2,28 +2,10 @@
 import Badge from '@/shared/ui/badge/index.vue'
 import Button from '@/shared/ui/button/index.vue'
 import { getFlag } from '@/shared/utils/getFlag'
-import { defaultInfo, type InfoItem } from '../model'
+import { useSeasonHeader, useSeasonInfo } from '../model'
 
-const props = withDefaults(
-  defineProps<{
-    eyebrow?: string
-    title?: string
-    flag?: string
-    region?: string
-    game?: string
-    status?: string
-    info?: InfoItem[]
-  }>(),
-  {
-    eyebrow: 'F1 2020 COMMUNITY CHAMPIONSHIP',
-    title: 'Season 1',
-    flag: '🇺🇿',
-    region: 'Uzbekistan',
-    game: 'F1 2020 · PC',
-    status: 'STATUS: LIVE',
-    info: () => defaultInfo,
-  },
-)
+const header = useSeasonHeader()
+const info = useSeasonInfo()
 
 defineEmits<{
   viewStandings: []
@@ -36,25 +18,24 @@ defineEmits<{
     <div class="flex flex-col items-start justify-between gap-6 lg:flex-row">
       <div class="flex flex-col items-start gap-2.5">
         <p class="text-[12px] font-bold tracking-[1.2px] text-[#C13B33]">
-          {{ props.eyebrow }}
+          {{ header.eyebrow }}
         </p>
-        <h1 class="text-[40px] font-extrabold text-[#F4F4F2]">{{ props.title }}</h1>
+        <h1 class="text-[40px] font-extrabold text-[#F4F4F2]">{{ header.title }}</h1>
         <div class="flex items-center gap-2.5 text-[13px]">
           <img
-            v-if="getFlag(props.region)"
-            :src="getFlag(props.region)"
-            :alt="props.region"
+            v-if="getFlag(header.region)"
+            :src="getFlag(header.region)"
+            :alt="header.region"
             class="h-3.5 w-auto shrink-0 rounded-[1px]"
           />
-          <span v-else class="text-[14px]">{{ props.flag }}</span>
-          <span class="text-[#9C9CA1]">{{ props.region }}</span>
+          <span class="text-[#9C9CA1]">{{ header.region }}</span>
           <span class="text-[#68686D]">·</span>
-          <span class="text-[#9C9CA1]">{{ props.game }}</span>
+          <span class="text-[#9C9CA1]">{{ header.game }}</span>
         </div>
       </div>
 
       <div class="flex flex-col items-start gap-3.5 lg:items-end">
-        <Badge variant="green">{{ props.status }}</Badge>
+        <Badge variant="green">{{ header.status }}</Badge>
         <div class="flex gap-3">
           <Button variant="filled" @click="$emit('viewStandings')">VIEW STANDINGS</Button>
           <Button variant="outlined" @click="$emit('viewNextRace')">NEXT RACE</Button>
@@ -64,7 +45,7 @@ defineEmits<{
 
     <div class="flex w-full flex-col border border-[#2A2A2E] bg-[#141416] lg:flex-row">
       <div
-        v-for="(item, index) in props.info"
+        v-for="(item, index) in info"
         :key="item.label"
         class="flex flex-1 flex-col gap-1 px-6 py-4.5"
         :class="index > 0 && 'border-t border-[#2A2A2E] lg:border-t-0 lg:border-l'"

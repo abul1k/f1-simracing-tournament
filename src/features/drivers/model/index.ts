@@ -1,59 +1,20 @@
-export interface DriverSource {
-  driver: string
-  nationality: string
-  team: string
-  results: (number | string)[]
-  pts: number
-}
+import { computed, type ComputedRef } from 'vue'
+import { useDriversStore } from '@/entities/driver/model/store'
+import { useStandingsStore } from '@/entities/standings/model/store'
+import { useTeamsStore } from '@/entities/team/model/store'
 
+/** One driver card in the drivers grid. */
 export interface DriverProfile {
+  id: string
   name: string
   number: number
   nationality: string
+  teamId: string
   team: string
   pts: number
   wins: number
   podiums: number
 }
-
-export const carNumbers: Record<string, number> = {
-  Abdulaziz: 44,
-  Sardor: 63,
-  Timur: 16,
-  Javlon: 55,
-  Aziz: 33,
-  Otabek: 10,
-  Bobur: 4,
-  Bekzod: 3,
-  Jamshid: 27,
-  Shahzod: 31,
-  Ulugbek: 18,
-  Farrukh: 11,
-  Islom: 24,
-  Anvar: 87,
-  Davron: 77,
-  Sanjar: 5,
-  Nodir: 6,
-  Elyor: 23,
-  Rustam: 20,
-  Diyor: 30,
-}
-
-const numberOf = (name: string) =>
-  carNumbers[name] ?? carNumbers[name.split(' ')[0]] ?? 0
-
-export const buildDrivers = (rows: DriverSource[]): DriverProfile[] =>
-  rows.map((row) => ({
-    name: row.driver,
-    number: numberOf(row.driver),
-    nationality: row.nationality,
-    team: row.team,
-    pts: row.pts,
-    wins: row.results.filter((result) => result === 1).length,
-    podiums: row.results.filter(
-      (result) => typeof result === 'number' && result <= 3,
-    ).length,
-  }))
 
 export type SortKey = 'POSITION' | 'POINTS' | 'WINS' | 'NUMBER'
 
@@ -70,9 +31,41 @@ export type StatusKey = 'ALL' | 'SCORED' | 'NO POINTS'
 
 export const statusKeys: StatusKey[] = ['ALL', 'SCORED', 'NO POINTS']
 
-export const matchesStatus = (driver: DriverProfile, status: StatusKey) => {
+export const matchesStatus = (driver: DriverProfile, status: StatusKey): boolean => {
   if (status === 'SCORED') return driver.pts > 0
   if (status === 'NO POINTS') return driver.pts === 0
 
   return true
+}
+
+/**
+ * Driver cards in championship order, joining `data/drivers.json` with the
+ * points, wins and podiums already computed into `data/standings.json`.
+ */
+export const useDriverCards = (): ComputedRef<DriverProfile[]> => {
+  const drivers = useDriversStore()
+  const standings = useStandingsStore()
+  const teams = useTeamsStore()
+
+  return computed(() =>
+    standings.driverStandings.flatMap((entry) => {
+      const driver = drivers.getDriverById(entry.driverId)
+
+      if (!driver) return []
+
+      return [
+        {
+          id: driver.id,
+          name: driver.name,
+          number: driver.number,
+          nationality: driver.country,
+          teamId: driver.teamId,
+          team: teams.getTeamName(driver.teamId),
+          pts: entry.points,
+          wins: entry.wins,
+          podiums: entry.podiums,
+        },
+      ]
+    }),
+  )
 }

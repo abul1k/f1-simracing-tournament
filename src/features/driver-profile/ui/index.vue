@@ -2,55 +2,41 @@
 import { computed } from 'vue'
 import Table from '@/shared/ui/table/index.vue'
 import type { TableField } from '@/shared/ui/table/types'
-import { teamColor } from '@/shared/config/teams'
-import { getCircuit } from '@/shared/config/circuits'
+import { teamColor } from '@/entities/team/lib'
 import { countryName } from '@/shared/config/countries'
 import { getFlag } from '@/shared/utils/getFlag'
 import {
-  buildHistory,
-  buildStats,
   positionHeight,
+  useDriverHistory,
+  useDriverStats,
   valueHeight,
-  type ProfileRound,
-  type ProfileSource,
+  type ProfileHeader,
 } from '../model'
 
 const props = withDefaults(
   defineProps<{
-    driver?: ProfileSource
-    rounds?: ProfileRound[]
+    driver?: ProfileHeader
     season?: string
-    number?: number
   }>(),
   {
-    rounds: () => [],
     season: 'Season 1',
   },
 )
 
-const circuitOf = (country: string) => getCircuit(country)?.split(',')[0] ?? '—'
+const driverId = computed(() => props.driver?.id)
 
-const history = computed(() =>
-  props.driver ? buildHistory(props.driver, props.rounds, circuitOf) : [],
-)
+const history = useDriverHistory(driverId)
+const stats = useDriverStats(driverId, history)
 
-const stats = computed(() =>
-  props.driver ? buildStats(props.driver, history.value) : undefined,
-)
-
-const statCards = computed(() => {
-  if (!stats.value) return []
-
-  return [
-    { label: 'RACES', value: stats.value.races },
-    { label: 'WINS', value: stats.value.wins },
-    { label: 'PODIUMS', value: stats.value.podiums },
-    { label: 'POLES', value: stats.value.poles },
-    { label: 'FASTEST LAPS', value: stats.value.fastestLaps },
-    { label: 'DNFS', value: stats.value.dnfs },
-    { label: 'AVERAGE FINISH', value: stats.value.averageFinish },
-  ]
-})
+const statCards = computed(() => [
+  { label: 'RACES', value: stats.value.races },
+  { label: 'WINS', value: stats.value.wins },
+  { label: 'PODIUMS', value: stats.value.podiums },
+  { label: 'POLES', value: stats.value.poles },
+  { label: 'FASTEST LAPS', value: stats.value.fastestLaps },
+  { label: 'DNFS', value: stats.value.dnfs },
+  { label: 'AVERAGE FINISH', value: stats.value.averageFinish },
+])
 
 const maxPoints = computed(() =>
   history.value.reduce((max, entry) => Math.max(max, entry.cumulative), 0),
@@ -79,7 +65,7 @@ const positionLabel = (value: number | string | null) =>
 </script>
 
 <template>
-  <section v-if="props.driver && stats" class="flex w-full flex-col gap-4">
+  <section v-if="props.driver" class="flex w-full flex-col gap-4">
     <RouterLink
       :to="{ name: 'drivers' }"
       class="flex w-fit items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-[#C13B33] transition-opacity hover:opacity-75"
@@ -102,17 +88,17 @@ const positionLabel = (value: number | string | null) =>
 
     <header
       class="mt-2 flex flex-col gap-6 border-l-4 bg-[#141416] px-8 py-7 lg:flex-row lg:items-center lg:justify-between"
-      :style="{ borderColor: teamColor(props.driver.team) }"
+      :style="{ borderColor: teamColor(props.driver.teamId) }"
     >
       <div class="flex items-center gap-5">
         <span class="font-mono text-[22px] font-bold text-[#68686D]">
-          #{{ props.number }}
+          #{{ props.driver.number }}
         </span>
         <span class="h-11 w-px shrink-0 bg-[#2A2A2E]"></span>
 
         <div class="flex flex-col gap-1.5">
           <h1 class="text-[28px] font-extrabold text-[#F4F4F2] uppercase">
-            {{ props.driver.driver }}
+            {{ props.driver.name }}
           </h1>
 
           <div class="flex flex-wrap items-center gap-2 text-[13px]">
@@ -129,7 +115,7 @@ const positionLabel = (value: number | string | null) =>
             <span class="flex items-center gap-1.5">
               <span
                 class="h-[6px] w-[6px] shrink-0 rounded-full"
-                :style="{ backgroundColor: teamColor(props.driver.team) }"
+                :style="{ backgroundColor: teamColor(props.driver.teamId) }"
               ></span>
               <span class="font-semibold text-[#9C9CA1]">{{ props.driver.team }}</span>
             </span>

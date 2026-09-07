@@ -3,30 +3,28 @@ import { computed, ref } from 'vue'
 import Button from '@/shared/ui/button/index.vue'
 import Table from '@/shared/ui/table/index.vue'
 import type { TableField } from '@/shared/ui/table/types'
-import { teamColor, teamGradient } from '@/shared/config/teams'
+import { teamColor, teamGradient } from '@/entities/team/lib'
 import { getFlag } from '@/shared/utils/getFlag'
 import {
-  defaultStandings,
   ordinals,
   podiumHeights,
   previewCount,
   splitName,
-  trendColor,
-  type StandingRow,
+  useChampionshipStandings,
 } from '../model'
 
 const props = withDefaults(
   defineProps<{
     title?: string
-    standings?: StandingRow[]
     previewCount?: number
   }>(),
   {
     title: 'CHAMPIONSHIP STANDINGS',
-    standings: () => defaultStandings,
     previewCount,
   },
 )
+
+const standings = useChampionshipStandings()
 
 defineEmits<{
   viewFull: []
@@ -54,18 +52,16 @@ const fields: TableField[] = [
 ]
 
 const podium = computed(() =>
-  [props.standings[1], props.standings[0], props.standings[2]].filter(Boolean),
+  [standings.value[1], standings.value[0], standings.value[2]].filter(Boolean),
 )
 
 const expanded = ref(false)
 
 const visible = computed(() =>
-  expanded.value
-    ? props.standings
-    : props.standings.slice(0, props.previewCount),
+  expanded.value ? standings.value : standings.value.slice(0, props.previewCount),
 )
 
-const expandable = computed(() => props.standings.length > props.previewCount)
+const expandable = computed(() => standings.value.length > props.previewCount)
 </script>
 
 <template>
@@ -108,7 +104,7 @@ const expandable = computed(() => props.standings.length > props.previewCount)
         :class="driver.pos === 1 && 'order-first md:order-none'"
         :style="{
           height: podiumHeights[driver.pos],
-          backgroundImage: teamGradient(driver.team),
+          backgroundImage: teamGradient(driver.teamId),
         }"
       >
         <div
@@ -146,12 +142,6 @@ const expandable = computed(() => props.standings.length > props.previewCount)
                 :alt="driver.country"
                 class="h-6 w-6 rounded-full border border-white/35 object-cover"
               />
-              <span
-                v-else
-                class="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full border border-white/35 text-[13px]"
-              >
-                {{ driver.flag }}
-              </span>
             </div>
           </div>
 
@@ -177,11 +167,11 @@ const expandable = computed(() => props.standings.length > props.previewCount)
         }}</span>
       </template>
 
-      <template #cell(team)="{ value }">
+      <template #cell(team)="{ item, value }">
         <div class="flex items-center gap-2">
           <span
             class="h-[7px] w-[7px] shrink-0 rounded-full"
-            :style="{ backgroundColor: teamColor(value) }"
+            :style="{ backgroundColor: teamColor(item.teamId) }"
           ></span>
           <span class="truncate text-[13px] text-[#9C9CA1]">{{ value }}</span>
         </div>
@@ -197,7 +187,7 @@ const expandable = computed(() => props.standings.length > props.previewCount)
       @click="expanded = !expanded"
     >
       {{
-        expanded ? 'SHOW LESS' : `SHOW ALL ${props.standings.length} DRIVERS`
+        expanded ? 'SHOW LESS' : `SHOW ALL ${standings.length} DRIVERS`
       }}
     </Button>
   </section>

@@ -1,0 +1,114 @@
+[
+  {
+    "round": 1,
+    "flag": "au",
+    "country": "AUSTRALIA",
+    "type": "FEATURE RACE",
+    "date": "2026-09-07"
+  },
+  {
+    "round": 2,
+    "flag": "bh",
+    "country": "BAHRAIN",
+    "type": "FEATURE RACE",
+    "date": "2026-09-10"
+  },
+  {
+    "round": 3,
+    "flag": "cn",
+    "country": "CHINA",
+    "type": "FEATURE RACE",
+    "date": "2026-09-14"
+  },
+  {
+    "round": 4,
+    "flag": "az",
+    "country": "AZERBAIJAN",
+    "type": "SPRINT RACE",
+    "date": "2026-09-17"
+  },
+  {
+    "round": 5,
+    "flag": "jp",
+    "country": "JAPAN",
+    "type": "FEATURE RACE",
+    "date": "2026-09-21"
+  },
+  {
+    "round": 6,
+    "flag": "at",
+    "country": "AUSTRIA",
+    "type": "SPRINT RACE",
+    "date": "2026-09-24"
+  },
+  {
+    "round": 7,
+    "flag": "gb",
+    "country": "GREAT BRITAIN",
+    "type": "SPRINT RACE",
+    "date": "2026-09-24"
+  },
+  {
+    "round": 8,
+    "flag": "hu",
+    "country": "HUNGARY",
+    "type": "SPRINT RACE",
+    "date": "2026-09-28"
+  },
+  {
+    "round": 9,
+    "flag": "be",
+    "country": "BELGIUM",
+    "type": "FEATURE RACE",
+    "date": "2026-10-01"
+  },
+  {
+    "round": 10,
+    "flag": "it",
+    "country": "ITALY",
+    "type": "SPRINT RACE",
+    "date": "2026-10-05"
+  },
+  {
+    "round": 11,
+    "flag": "sg",
+    "country": "SINGAPORE",
+    "type": "SPRINT RACE",
+    "date": "2026-10-05"
+  },
+  {
+    "round": 12,
+    "flag": "ru",
+    "country": "RUSSIA",
+    "type": "FEATURE RACE",
+    "date": "2026-10-08"
+  },
+  {
+    "round": 13,
+    "flag": "us",
+    "country": "USA",
+    "type": "SPRINT RACE",
+    "date": "2026-10-12"
+  },
+  {
+    "round": 14,
+    "flag": "mx",
+    "country": "MEXICO",
+    "type": "FEATURE RACE",
+    "date": "2026-10-15"
+  },
+  {
+    "round": 15,
+    "flag": "br",
+    "country": "BRAZIL",
+    "type": "FEATURE RACE",
+    "date": "2026-10-19"
+  },
+  {
+    "round": 16,
+    "flag": "ae",
+    "country": "ABU DHABI",
+    "type": "FEATURE RACE",
+    "date": "2026-10-22"
+  }
+]

@@ -1,33 +1,33 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { teamColor } from '@/shared/config/teams'
+import { teamColor } from '@/entities/team/lib'
 import { getFlag } from '@/shared/utils/getFlag'
 import {
-  defaultRounds,
   formatRoundDate,
   podiumLabels,
   todayISO,
+  useCalendarRounds,
   type CalendarRound,
 } from '../model'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     eyebrow?: string
     title?: string
-    rounds?: CalendarRound[]
   }>(),
   {
     eyebrow: 'SEASON 1',
     title: 'Race Calendar',
-    rounds: () => defaultRounds,
   },
 )
+
+const rounds = useCalendarRounds()
 
 const nextRound = computed(() => {
   const today = todayISO()
 
-  return props.rounds.find((item) => item.date >= today)?.round
+  return rounds.value.find((item) => item.date >= today)?.round
 })
 
 const isNext = (item: CalendarRound) => item.round === nextRound.value
@@ -144,7 +144,7 @@ const hasResults = (item: CalendarRound) => Boolean(item.podium?.length)
               class="h-[18px] w-[18px] shrink-0 rounded-full"
               :style="{
                 backgroundColor: item.podium?.[index]
-                  ? teamColor(item.podium[index].team)
+                  ? teamColor(item.podium[index].teamId)
                   : 'transparent',
               }"
               :class="!item.podium?.[index] && 'border border-dashed border-white/30'"

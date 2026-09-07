@@ -1,29 +1,26 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { teamColor, teamInk } from '@/shared/config/teams'
+import { teamColor, teamInk } from '@/entities/team/lib'
 import { getFlag } from '@/shared/utils/getFlag'
 import { toSlug } from '@/shared/utils/slug'
 import {
-  buildDrivers,
   matchesStatus,
   sortKeys,
   sorters,
   statusKeys,
-  type DriverSource,
+  useDriverCards,
   type SortKey,
   type StatusKey,
 } from '../model'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     eyebrow?: string
     title?: string
-    source?: DriverSource[]
   }>(),
   {
     eyebrow: 'SEASON 1',
     title: 'Drivers',
-    source: () => [],
   },
 )
 
@@ -32,7 +29,7 @@ const team = ref('ALL')
 const sort = ref<SortKey>('POSITION')
 const status = ref<StatusKey>('ALL')
 
-const drivers = computed(() => buildDrivers(props.source))
+const drivers = useDriverCards()
 
 const teams = computed(() => [
   'ALL',
@@ -54,10 +51,10 @@ const visible = computed(() => {
   <section class="flex w-full flex-col gap-6">
     <div class="flex flex-col gap-1.5">
       <p class="text-[12px] font-bold tracking-[1.2px] text-[#C13B33]">
-        {{ props.eyebrow }}
+        {{ eyebrow }}
       </p>
       <h1 class="text-[30px] font-extrabold text-[#F4F4F2]">
-        {{ props.title }}
+        {{ title }}
       </h1>
     </div>
 
@@ -170,12 +167,12 @@ const visible = computed(() => {
           params: { driver: toSlug(driver.name) },
         }"
         class="flex flex-col gap-3.5 p-5 transition-opacity hover:opacity-90"
-        :style="{ backgroundColor: teamColor(driver.team) }"
+        :style="{ backgroundColor: teamColor(driver.teamId) }"
       >
         <div class="flex w-full items-center justify-between">
           <span
             class="font-mono text-[14px] font-bold"
-            :style="{ color: teamInk(driver.team).soft }"
+            :style="{ color: teamInk(driver.teamId).soft }"
           >
             #{{ driver.number }}
           </span>
@@ -189,7 +186,7 @@ const visible = computed(() => {
 
         <h2
           class="text-[18px] font-extrabold"
-          :style="{ color: teamInk(driver.team).strong }"
+          :style="{ color: teamInk(driver.teamId).strong }"
         >
           {{ driver.name }}
         </h2>
@@ -197,11 +194,11 @@ const visible = computed(() => {
         <div class="flex items-center gap-1.5">
           <span
             class="h-[6px] w-[6px] shrink-0 rounded-full"
-            :style="{ backgroundColor: teamInk(driver.team).strong }"
+            :style="{ backgroundColor: teamInk(driver.teamId).strong }"
           ></span>
           <span
             class="text-[12px] whitespace-nowrap"
-            :style="{ color: teamInk(driver.team).soft }"
+            :style="{ color: teamInk(driver.teamId).soft }"
           >
             {{ driver.team }}
           </span>
@@ -209,7 +206,7 @@ const visible = computed(() => {
 
         <div
           class="h-px w-full"
-          :style="{ backgroundColor: teamInk(driver.team).line }"
+          :style="{ backgroundColor: teamInk(driver.teamId).line }"
         ></div>
 
         <div class="flex w-full justify-between">
@@ -224,13 +221,13 @@ const visible = computed(() => {
           >
             <span
               class="font-mono text-[16px] font-bold"
-              :style="{ color: teamInk(driver.team).strong }"
+              :style="{ color: teamInk(driver.teamId).strong }"
             >
               {{ stat.value }}
             </span>
             <span
               class="text-[9px] font-bold tracking-[0.5px]"
-              :style="{ color: teamInk(driver.team).soft }"
+              :style="{ color: teamInk(driver.teamId).soft }"
             >
               {{ stat.label }}
             </span>

@@ -3,14 +3,14 @@ import { computed, ref } from 'vue'
 import Button from '@/shared/ui/button/index.vue'
 import Table from '@/shared/ui/table/index.vue'
 import type { TableField } from '@/shared/ui/table/types'
-import { teamColor } from '@/shared/config/teams'
+import { teamColor } from '@/entities/team/lib'
+import { useChampionshipStore } from '@/entities/championship/model/store'
 import { getFlag } from '@/shared/utils/getFlag'
 import {
-  buildConstructorStandings,
-  defaultDriverStandings,
   isRetired,
-  roundCount,
-  type DriverStanding,
+  useCompletedRounds,
+  useConstructorStandings,
+  useDriverStandings,
   type RoundResult,
 } from '../model'
 
@@ -18,23 +18,32 @@ const props = withDefaults(
   defineProps<{
     eyebrow?: string
     title?: string
-    standings?: DriverStanding[]
   }>(),
   {
-    eyebrow: 'SEASON 1',
+    eyebrow: '',
     title: 'Championship Standings',
-    standings: () => defaultDriverStandings,
   },
 )
 
+const championship = useChampionshipStore()
+
+const standings = useDriverStandings()
+const constructors = useConstructorStandings()
+const completedRounds = useCompletedRounds()
+
 const tab = ref<'drivers' | 'constructors'>('drivers')
 
-const rounds = computed(() => roundCount(props.standings))
+const eyebrow = computed(() => props.eyebrow || championship.seasonLabel)
 
+/** False before any race has been run — the tables would be all zeroes. */
+const hasResults = computed(() => completedRounds.value.length > 0)
+
+// Columns are labelled with the real round number, so a season with a skipped
+// or postponed round still reads correctly (R1, R3 — not R1, R2).
 const roundFields = computed<TableField[]>(() =>
-  Array.from({ length: rounds.value }, (_, index) => ({
+  completedRounds.value.map((round, index) => ({
     key: `results.${index}`,
-    label: `R${index + 1}`,
+    label: `R${round}`,
     width: '56px',
     class: 'font-mono text-[12px] font-medium',
   })),
@@ -79,9 +88,7 @@ const constructorFields: TableField[] = [
   },
 ]
 
-const constructors = computed(() => buildConstructorStandings(props.standings))
-
-const tableWidth = computed(() => `${584 + rounds.value * 56}px`)
+const tableWidth = computed(() => `${584 + completedRounds.value.length * 56}px`)
 
 const resultClass = (value: RoundResult, pos: number) => {
   if (isRetired(value)) return 'font-semibold text-[#C13B33]'
@@ -94,14 +101,14 @@ const resultClass = (value: RoundResult, pos: number) => {
   <section class="flex w-full flex-col gap-6">
     <div class="flex flex-col gap-1.5">
       <p class="text-[12px] font-bold tracking-[1.2px] text-[#C13B33]">
-        {{ props.eyebrow }}
+        {{ eyebrow }}
       </p>
       <h1 class="text-[30px] font-extrabold text-[#F4F4F2]">
         {{ props.title }}
       </h1>
     </div>
 
-    <div class="flex gap-2">
+    <div v-if="hasResults" class="flex gap-2">
       <Button
         :variant="tab === 'drivers' ? 'filled' : 'outlined'"
         @click="tab = 'drivers'"
@@ -116,10 +123,20 @@ const resultClass = (value: RoundResult, pos: number) => {
       </Button>
     </div>
 
+    <div
+      v-if="!hasResults"
+      class="flex flex-col items-center gap-2 border border-[#2A2A2E] bg-[#141416] px-6 py-14 text-center"
+    >
+      <p class="text-[15px] font-bold text-[#F4F4F2]">No races completed yet</p>
+      <p class="max-w-[420px] text-[13px] text-[#68686D]">
+        Standings appear here once a round's race is marked completed.
+      </p>
+    </div>
+
     <Table
-      v-if="tab === 'drivers'"
+      v-else-if="tab === 'drivers'"
       :fields="driverFields"
-      :items="props.standings"
+      :items="standings"
       row-key="driver"
       :min-width="tableWidth"
     >
@@ -129,19 +146,31 @@ const resultClass = (value: RoundResult, pos: number) => {
         }}</span>
       </template>
 
-      <template #cell(team)="{ value }">
+      <template #cell(driver)="{ item, value }">
+        <div class="flex items-center gap-2.5">
+          <img
+            v-if="getFlag(item.nationality)"
+            :src="getFlag(item.nationality)"
+            :alt="item.nationality"
+            class="h-3 w-auto shrink-0 rounded-[1px]"
+          />
+          <span class="truncate">{{ value }}</span>
+        </div>
+      </template>
+
+      <template #cell(team)="{ item, value }">
         <div class="flex items-center gap-2">
           <span
             class="h-[6px] w-[6px] shrink-0 rounded-full"
-            :style="{ backgroundColor: teamColor(value) }"
+            :style="{ backgroundColor: teamColor(item.teamId) }"
           ></span>
           <span class="truncate text-[12px] text-[#9C9CA1]">{{ value }}</span>
         </div>
       </template>
 
       <template
-        v-for="(field, index) in roundFields"
-        :key="field.key"
+        v-for="(_field, index) in roundFields"
+        :key="index"
         #[`cell(results.${index})`]="{ item, value }"
       >
         <span :class="resultClass(value, item.pos)">{{ value ?? '—' }}</span>
@@ -161,11 +190,11 @@ const resultClass = (value: RoundResult, pos: number) => {
         }}</span>
       </template>
 
-      <template #cell(team)="{ value }">
+      <template #cell(team)="{ item, value }">
         <div class="flex items-center gap-2">
           <span
             class="h-[6px] w-[6px] shrink-0 rounded-full"
-            :style="{ backgroundColor: teamColor(value) }"
+            :style="{ backgroundColor: teamColor(item.teamId) }"
           ></span>
           <span class="text-[13px] font-semibold text-[#F4F4F2]">{{
             value

@@ -1,0 +1,151 @@
+[
+  {
+    "id": "DRV001",
+    "name": "Saidkamol Inomov",
+    "number": 1,
+    "teamId": "TEAM_MER",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV002",
+    "name": "Shahboz Mashrabjanov",
+    "number": 2,
+    "teamId": "TEAM_MER",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV003",
+    "name": "Muhammad Amin",
+    "number": 3,
+    "teamId": "TEAM_RBR",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV004",
+    "name": "Humoyun Najmiddinov",
+    "number": 4,
+    "teamId": "TEAM_RBR",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV005",
+    "name": "Maksim Yusupov",
+    "number": 5,
+    "teamId": "TEAM_FER",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV006",
+    "name": "Javohir Anvarjonov",
+    "number": 6,
+    "teamId": "TEAM_FER",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV007",
+    "name": "Sarvar Temirov",
+    "number": 7,
+    "teamId": "TEAM_MCL",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV008",
+    "name": "Sarvar Baxronov",
+    "number": 8,
+    "teamId": "TEAM_MCL",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV009",
+    "name": "Sodiq Xolmatov",
+    "number": 9,
+    "teamId": "TEAM_RP",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV010",
+    "name": "Abdumannon Abdumajidov",
+    "number": 10,
+    "teamId": "TEAM_RP",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV011",
+    "name": "Abdulaziz Izzatullayev",
+    "number": 11,
+    "teamId": "TEAM_REN",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV012",
+    "name": "Ibrohim Dadaboyev",
+    "number": 12,
+    "teamId": "TEAM_REN",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV013",
+    "name": "Sharifov Feruzbek",
+    "number": 13,
+    "teamId": "TEAM_AT",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV014",
+    "name": "Abroxon Muxsimov",
+    "number": 14,
+    "teamId": "TEAM_AT",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV015",
+    "name": "Mehroj Sobirov",
+    "number": 15,
+    "teamId": "TEAM_ALF",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV016",
+    "name": "O'ktamov Abdulhafiz",
+    "number": 16,
+    "teamId": "TEAM_ALF",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV017",
+    "name": "Xamidxonov Boburxon",
+    "number": 17,
+    "teamId": "TEAM_HAS",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV018",
+    "name": "Nurmuxammad Samariddinov",
+    "number": 18,
+    "teamId": "TEAM_HAS",
+    "country": "UZ"
+  },
+
+  {
+    "id": "DRV019",
+    "name": "Arabjon Ibroximov",
+    "number": 19,
+    "teamId": "TEAM_WIL",
+    "country": "UZ"
+  },
+  {
+    "id": "DRV020",
+    "name": "Ahadjon Ibroximov",
+    "number": 20,
+    "teamId": "TEAM_WIL",
+    "country": "UZ"
+  }
+]

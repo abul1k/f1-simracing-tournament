@@ -1,26 +1,27 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import Table from '@/shared/ui/table/index.vue'
 import type { TableField } from '@/shared/ui/table/types'
-import { teamColor } from '@/shared/config/teams'
+import { teamColor } from '@/entities/team/lib'
 import { getCircuit } from '@/shared/config/circuits'
 import { getFlag } from '@/shared/utils/getFlag'
-import { defaultSessionResults, type SessionResultRow } from '../model'
+import type { SessionResultRow } from '../model'
 
-const props = withDefaults(
-  defineProps<{
-    title?: string
-    sessionName?: string
-    country?: string
-    date?: string
-    round?: number
-    results?: SessionResultRow[]
-  }>(),
-  {
-    results: () => defaultSessionResults,
-  },
+const props = defineProps<{
+  title?: string
+  sessionName?: string
+  country?: string
+  date?: string
+  round?: number
+  results: SessionResultRow[]
+}>()
+
+/** Qualifying rows carry a lap time; race rows carry a grid slot and a status. */
+const isQualifying = computed(() =>
+  props.results.some((row) => row.time !== undefined),
 )
 
-const fields: TableField[] = [
+const fields = computed<TableField[]>(() => [
   {
     key: 'pos',
     label: 'POS.',
@@ -35,20 +36,42 @@ const fields: TableField[] = [
   },
   { key: 'driver', label: 'DRIVER' },
   { key: 'team', label: 'TEAM', width: '200px' },
-  {
-    key: 'time',
-    label: 'TIME / GAP',
-    width: '130px',
-    class: 'font-mono text-[13px] font-medium text-[#F4F4F2]',
-  },
-  {
-    key: 'laps',
-    label: 'LAPS',
-    width: '70px',
-    align: 'right',
-    class: 'font-mono text-[13px] font-medium text-[#9C9CA1]',
-  },
-]
+  ...(isQualifying.value
+    ? [
+        {
+          key: 'time',
+          label: 'TIME',
+          width: '130px',
+          align: 'right' as const,
+          class: 'font-mono text-[13px] font-medium text-[#F4F4F2]',
+        },
+      ]
+    : [
+        {
+          key: 'grid',
+          label: 'GRID',
+          width: '70px',
+          class: 'font-mono text-[13px] font-medium text-[#9C9CA1]',
+        },
+        {
+          key: 'status',
+          label: 'STATUS',
+          width: '110px',
+          class: 'text-[12px] font-semibold text-[#9C9CA1]',
+        },
+        {
+          key: 'points',
+          label: 'PTS',
+          width: '96px',
+          align: 'right' as const,
+          class: 'font-mono text-[13px] font-bold text-[#F4F4F2]',
+        },
+      ]),
+])
+
+/** Points before the fastest-lap bonus, so the bonus can be shown separately. */
+const basePoints = (row: SessionResultRow) =>
+  (row.points ?? 0) - (row.bonus ?? 0)
 </script>
 
 <template>
@@ -84,7 +107,9 @@ const fields: TableField[] = [
         />
         <h1 class="text-[30px] font-extrabold text-[#F4F4F2]">
           {{ props.title }}
-          <span v-if="props.sessionName" class="text-[#68686D]">—</span>
+          <span v-if="props.sessionName" class="text-red-800 font-bold"
+            >/
+          </span>
           <span v-if="props.sessionName">{{ props.sessionName }}</span>
         </h1>
       </div>
@@ -100,25 +125,42 @@ const fields: TableField[] = [
       :fields="fields"
       :items="props.results"
       row-key="code"
-      min-width="820px"
+      min-width="900px"
       row-padding="px-5 py-3.25"
     >
       <template #cell(driver)="{ item }">
         <div class="flex items-center gap-2.5">
           <span
             class="h-[18px] w-[18px] shrink-0 rounded-full"
-            :style="{ backgroundColor: teamColor(item.team) }"
+            :style="{ backgroundColor: teamColor(item.teamId) }"
           ></span>
-          <span class="text-[14px] font-semibold text-[#F4F4F2]">{{ item.driver }}</span>
-          <span class="font-mono text-[12px] text-[#68686D]">{{ item.code }}</span>
+          <span class="text-[14px] font-semibold text-[#F4F4F2]">{{
+            item.driver
+          }}</span>
+          <span class="font-mono text-[12px] text-[#68686D]">{{
+            item.code
+          }}</span>
         </div>
       </template>
 
-      <template #cell(team)="{ value }">
+      <template #cell(points)="{ item }">
+        <span :class="item.points ? 'text-[#F4F4F2]' : 'text-[#68686D]'">
+          {{ basePoints(item) }}
+        </span>
+        <span
+          v-if="item.bonus"
+          class="ml-1 text-[#B24BF3]"
+          title="Fastest lap bonus"
+        >
+          +{{ item.bonus }}
+        </span>
+      </template>
+
+      <template #cell(team)="{ item, value }">
         <div class="flex items-center gap-2">
           <span
             class="h-[7px] w-[7px] shrink-0 rounded-full"
-            :style="{ backgroundColor: teamColor(value) }"
+            :style="{ backgroundColor: teamColor(item.teamId) }"
           ></span>
           <span class="truncate text-[13px] text-[#9C9CA1]">{{ value }}</span>
         </div>

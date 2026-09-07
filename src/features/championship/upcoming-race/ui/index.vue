@@ -5,28 +5,15 @@ import Button from '@/shared/ui/button/index.vue'
 import Table from '@/shared/ui/table/index.vue'
 import type { TableField } from '@/shared/ui/table/types'
 import { getFlag } from '@/shared/utils/getFlag'
-import {
-  defaultLastResult,
-  defaultNextRace,
-  type LastResult,
-  type NextRace,
-} from '../model'
-
-const props = withDefaults(
-  defineProps<{
-    nextRace?: NextRace
-    lastResult?: LastResult
-  }>(),
-  {
-    nextRace: () => defaultNextRace,
-    lastResult: () => defaultLastResult,
-  },
-)
+import { useLastResult, useNextRace } from '../model'
 
 defineEmits<{
   viewRace: []
   viewFullResult: []
 }>()
+
+const nextRace = useNextRace()
+const lastResult = useLastResult()
 
 const resultFields: TableField[] = [
   {
@@ -44,26 +31,37 @@ const resultFields: TableField[] = [
 ]
 
 const now = ref(Date.now())
-let timer: ReturnType<typeof setInterval> | undefined
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
-const countdown = computed(() => {
-  if (!props.nextRace.startsAt) return props.nextRace.countdown
+/** Milliseconds until the weekend's first qualifying session, null if unknown. */
+const msUntilStart = computed(() => {
+  const startsAt = nextRace.value?.startsAt
 
-  const diff = new Date(props.nextRace.startsAt).getTime() - now.value
-  if (diff <= 0) return 'LIVE NOW'
+  if (!startsAt) return null
+
+  return new Date(startsAt).getTime() - now.value
+})
+
+/** True from the moment the first qualifying session is due to begin. */
+const isLive = computed(() => msUntilStart.value !== null && msUntilStart.value <= 0)
+
+const countdown = computed(() => {
+  const diff = msUntilStart.value
+
+  if (diff === null) return nextRace.value?.countdown ?? ''
 
   const days = Math.floor(diff / 86_400_000)
   const hours = Math.floor(diff / 3_600_000) % 24
   const minutes = Math.floor(diff / 60_000) % 60
+  const seconds = Math.floor(diff / 1_000) % 60
 
-  return `${pad(days)}D ${pad(hours)}H ${pad(minutes)}M`
+  return `${pad(days)}D ${pad(hours)}H ${pad(minutes)}M ${pad(seconds)}S`
 })
 
-if (props.nextRace.startsAt) {
-  timer = setInterval(() => (now.value = Date.now()), 30_000)
-}
+// Ticks every second, so the flip to LIVE NOW happens on the minute it is due
+// rather than up to half a minute late.
+const timer = setInterval(() => (now.value = Date.now()), 1_000)
 
 onUnmounted(() => clearInterval(timer))
 </script>
@@ -71,30 +69,30 @@ onUnmounted(() => clearInterval(timer))
 <template>
   <section class="flex w-full flex-col items-start gap-5 lg:flex-row">
     <div
+      v-if="nextRace"
       class="flex w-full flex-col items-start gap-5 border border-[#2A2A2E] bg-[#141416] p-7 lg:flex-1"
     >
       <div class="flex w-full items-center justify-between">
         <span class="text-[12px] font-bold tracking-[1px] text-[#68686D]">
-          {{ props.nextRace.round }}
+          {{ nextRace.round }}
         </span>
         <Badge variant="gray" size="sm" :dot="false">
-          {{ props.nextRace.status }}
+          {{ nextRace.status }}
         </Badge>
       </div>
 
       <div class="flex items-center gap-3">
         <img
-          v-if="getFlag(props.nextRace.country)"
-          :src="getFlag(props.nextRace.country)"
-          :alt="props.nextRace.country"
+          v-if="getFlag(nextRace.country)"
+          :src="getFlag(nextRace.country)"
+          :alt="nextRace.country"
           class="h-6 w-auto shrink-0 rounded-[1px]"
         />
-        <span v-else class="text-[24px]">{{ props.nextRace.flag }}</span>
         <div class="flex flex-col gap-0.5">
           <h2 class="text-[22px] font-extrabold text-[#F4F4F2]">
-            {{ props.nextRace.name }}
+            {{ nextRace.name }}
           </h2>
-          <p class="text-[13px] text-[#9C9CA1]">{{ props.nextRace.circuit }}</p>
+          <p class="text-[13px] text-[#9C9CA1]">{{ nextRace.circuit }}</p>
         </div>
       </div>
 
@@ -102,7 +100,7 @@ onUnmounted(() => clearInterval(timer))
 
       <div class="flex flex-wrap gap-8">
         <div
-          v-for="session in props.nextRace.sessions"
+          v-for="session in nextRace.sessions"
           :key="session.label"
           class="flex flex-col gap-1"
         >
@@ -117,9 +115,23 @@ onUnmounted(() => clearInterval(timer))
 
       <div class="flex flex-col gap-1.5">
         <span class="text-[11px] font-bold tracking-[0.8px] text-[#68686D]">
-          RACE WEEKEND STARTS IN
+          {{ isLive ? 'RACE WEEKEND' : `${nextRace.startsLabel} STARTS IN` }}
         </span>
-        <span class="font-mono text-[28px] font-semibold text-[#C13B33]">
+
+        <span
+          v-if="isLive"
+          class="flex items-center gap-2.5 font-mono text-[28px] font-semibold text-[#3FA35C]"
+        >
+          <span
+            class="h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-[#3FA35C] motion-reduce:animate-none"
+          ></span>
+          LIVE NOW
+        </span>
+
+        <span
+          v-else
+          class="font-mono text-[22px] font-semibold text-[#C13B33] sm:text-[28px]"
+        >
           {{ countdown }}
         </span>
       </div>
@@ -136,34 +148,39 @@ onUnmounted(() => clearInterval(timer))
         LAST RESULT
       </span>
 
-      <div class="flex items-center gap-2.5">
-        <img
-          v-if="getFlag(props.lastResult.country)"
-          :src="getFlag(props.lastResult.country)"
-          :alt="props.lastResult.country"
-          class="h-4.5 w-auto shrink-0 rounded-[1px]"
+      <template v-if="lastResult">
+        <div class="flex items-center gap-2.5">
+          <img
+            v-if="getFlag(lastResult.country)"
+            :src="getFlag(lastResult.country)"
+            :alt="lastResult.country"
+            class="h-4.5 w-auto shrink-0 rounded-[1px]"
+          />
+          <h2 class="text-[15px] font-bold text-[#F4F4F2]">
+            {{ lastResult.title }}
+          </h2>
+        </div>
+
+        <Table
+          :fields="resultFields"
+          :items="lastResult.results"
+          row-key="name"
+          min-width="0"
+          row-padding="px-0 py-2.5"
+          :bordered="false"
+          :hover="false"
+          hide-head
+          class="w-full"
         />
-        <span v-else class="text-[18px]">{{ props.lastResult.flag }}</span>
-        <h2 class="text-[15px] font-bold text-[#F4F4F2]">
-          {{ props.lastResult.title }}
-        </h2>
-      </div>
 
-      <Table
-        :fields="resultFields"
-        :items="props.lastResult.results"
-        row-key="name"
-        min-width="0"
-        row-padding="px-0 py-2.5"
-        :bordered="false"
-        :hover="false"
-        hide-head
-        class="w-full"
-      />
+        <Button variant="outlined" size="lg" full @click="$emit('viewFullResult')">
+          VIEW FULL RESULT
+        </Button>
+      </template>
 
-      <Button variant="outlined" size="lg" full @click="$emit('viewFullResult')">
-        VIEW FULL RESULT
-      </Button>
+      <p v-else class="py-4 text-[13px] text-[#68686D]">
+        No races completed yet — results appear here once a round is finished.
+      </p>
     </div>
   </section>
 </template>

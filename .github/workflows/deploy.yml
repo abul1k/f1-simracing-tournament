@@ -1,0 +1,118 @@
+# Validates the JSON data, recomputes points and standings, then builds and
+# deploys the site. Admins only ever edit files under data/ and push — this
+# workflow does the rest.
+name: Data & Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow the workflow to commit computed data back and to publish to Pages.
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Never let two deploys race; let a newer push cancel an in-flight run.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  data:
+    name: Validate & compute
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node 22.18+ runs the .ts scripts directly via native type stripping.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: yarn
+
+      - run: yarn install --frozen-lockfile
+
+      # 1. Fail fast and loudly on a bad hand-edit, before anything else runs.
+      - name: Validate data
+        run: yarn data:validate
+
+      # 2. Computed points are the source of truth — any hand-typed value is
+      #    overwritten here.
+      - name: Calculate points
+        run: yarn data:points
+
+      # 3. Aggregate completed rounds into data/standings.json.
+      - name: Build standings
+        run: yarn data:standings
+
+      # 4. Commit the computed files back so the repo always matches the site.
+      #    Skipped on pull requests, where the branch may not be writable.
+      - name: Commit computed data
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/standings.json data/rounds
+          if git diff --staged --quiet; then
+            echo 'No computed changes to commit.'
+          else
+            git commit -m 'chore(data): recompute points and standings [skip ci]'
+            git push
+          fi
+
+      - name: Upload computed data
+        uses: actions/upload-artifact@v4
+        with:
+          name: computed-data
+          path: data/
+
+  build:
+    name: Build site
+    needs: data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: yarn
+
+      - run: yarn install --frozen-lockfile
+
+      # Use the freshly computed data rather than whatever the checkout had.
+      - name: Download computed data
+        uses: actions/download-artifact@v4
+        with:
+          name: computed-data
+          path: data/
+
+      # Type-checks with vue-tsc, then bundles.
+      - name: Build
+        run: yarn build
+        env:
+          # A GitHub Pages project site is served from /<repo>/. Delete this line
+          # if you deploy to a domain root instead (Vercel, Netlify, custom domain).
+          VITE_BASE: /${{ github.event.repository.name }}/
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
