@@ -5,15 +5,26 @@ import Button from '@/shared/ui/button/index.vue'
 import Table from '@/shared/ui/table/index.vue'
 import type { TableField } from '@/shared/ui/table/types'
 import { getFlag } from '@/shared/utils/getFlag'
-import { useLastResult, useNextRace } from '../model'
+import { downloadCalendarEvent } from '@/shared/utils/calendarEvent'
+import { toSlug } from '@/shared/utils/slug'
+import { useLastResult, useNextRace, useNextRaceEvent } from '../model'
 
 defineEmits<{
-  viewRace: []
   viewFullResult: []
 }>()
 
 const nextRace = useNextRace()
+const nextRaceEvent = useNextRaceEvent()
 const lastResult = useLastResult()
+
+/** Hands the race to the visitor's own calendar app as an `.ics` download. */
+const addToCalendar = () => {
+  const event = nextRaceEvent.value
+
+  if (!event) return
+
+  downloadCalendarEvent(event, toSlug(event.title))
+}
 
 const resultFields: TableField[] = [
   {
@@ -138,8 +149,14 @@ onUnmounted(() => clearInterval(timer))
         </span>
       </div>
 
-      <Button variant="filled" size="lg" full @click="$emit('viewRace')">
-        VIEW RACE
+      <Button
+        variant="filled"
+        size="lg"
+        full
+        :disabled="!nextRaceEvent"
+        @click="addToCalendar"
+      >
+        ADD RACE TO CALENDAR
       </Button>
     </div>
 

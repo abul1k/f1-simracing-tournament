@@ -1,13 +1,17 @@
 import { computed, type ComputedRef } from 'vue'
 import { getDriverCode } from '@/entities/driver/api'
 import { isPodiumFinish } from '@/entities/round/model'
+import { useChampionshipStore } from '@/entities/championship/model/store'
 import { useDriversStore } from '@/entities/driver/model/store'
 import { useRoundsStore } from '@/entities/round/model/store'
 import { useTeamsStore } from '@/entities/team/model/store'
 import { getCircuit } from '@/shared/config/circuits'
+import type { CalendarEvent } from '@/shared/utils/calendarEvent'
 import {
   firstQualifying,
+  getSession,
   getSessions,
+  longDate,
   sessionStartsAt,
   sessionTime,
 } from '@/features/race-day/schedule/model'
@@ -151,6 +155,65 @@ export const useLastResult = (): ComputedRef<LastResult | undefined> => {
       country: last.country,
       title: `ROUND ${last.round} · ${last.country}`,
       results,
+    }
+  })
+}
+
+/**
+ * How long to block out for the race. The schedule gives the race a start time
+ * but no end — it is the last session of the weekend — so the calendar entry
+ * reserves an hour rather than showing as a zero-length event.
+ */
+const RACE_DURATION_MINUTES = 60
+
+/**
+ * The next race as a calendar event, ready to hand to the visitor's device.
+ *
+ * The event is the race itself, not the whole weekend: that is the date someone
+ * pressing "add to calendar" means. The rest of the weekend's running order
+ * rides along in the description so they still have it.
+ *
+ * @returns The event, or `undefined` once the season has no rounds left.
+ */
+export const useNextRaceEvent = (): ComputedRef<CalendarEvent | undefined> => {
+  const rounds = useRoundsStore()
+  const championship = useChampionshipStore()
+
+  return computed(() => {
+    const next = rounds.nextRound
+
+    if (!next) return undefined
+
+    const round = {
+      round: next.round,
+      country: next.country,
+      type: next.type,
+      date: next.date,
+    }
+
+    const race = getSession(round, 'race')
+
+    if (!race) return undefined
+
+    const schedule = getSessions(round)
+      .map((session) => `${session.name} — ${sessionTime(session)}`)
+      .join('\n')
+
+    return {
+      // Tied to the round, so adding the same race twice updates the existing
+      // entry in most calendar apps instead of duplicating it.
+      uid: `round-${next.round}-${next.date}@f1uzbekistan`,
+      title: `Round ${next.round}: ${next.country} Grand Prix`,
+      location: getCircuit(next.country) ?? next.country,
+      description: [
+        `${championship.championship.name} — Round ${next.round} of ${championship.roundsTotal}.`,
+        `${longDate(next.date)}, ${next.type.toLowerCase()}.`,
+        '',
+        'Weekend schedule:',
+        schedule,
+      ].join('\n'),
+      startsAt: sessionStartsAt(round, race),
+      durationMinutes: RACE_DURATION_MINUTES,
     }
   })
 }
