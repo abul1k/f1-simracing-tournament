@@ -43,7 +43,9 @@ const sizes: Record<Size, string> = {
 const classes = computed(() => [
   props.full ? 'w-full' : 'w-fit',
   sizes[props.size],
-  props.disabled ? variants[props.variant].disabled : variants[props.variant].base,
+  props.disabled
+    ? variants[props.variant].disabled
+    : variants[props.variant].base,
 ])
 </script>
 
@@ -53,7 +55,7 @@ const classes = computed(() => [
     :to="props.to"
     :type="props.to ? undefined : props.type"
     :disabled="props.to ? undefined : props.disabled"
-    class="flex items-center justify-center text-[12px] font-bold tracking-[0.5px] whitespace-nowrap transition-colors disabled:cursor-not-allowed"
+    class="cursor-pointer flex items-center justify-center text-[12px] font-bold tracking-[0.5px] whitespace-nowrap transition-colors disabled:cursor-not-allowed"
     :class="classes"
   >
     <slot />

@@ -6,6 +6,7 @@ import type { TableField } from '@/shared/ui/table/types'
 import { teamColor } from '@/entities/team/lib'
 import { useChampionshipStore } from '@/entities/championship/model/store'
 import { getFlag } from '@/shared/utils/getFlag'
+import { getPodiumBadge } from '@/shared/utils/getPodium'
 import {
   isRetired,
   useCompletedRounds,
@@ -45,6 +46,8 @@ const roundFields = computed<TableField[]>(() =>
     key: `results.${index}`,
     label: `R${round}`,
     width: '56px',
+    // Centred so the medals read as a tidy column of markers, not ragged text.
+    align: 'center' as const,
     class: 'font-mono text-[12px] font-medium',
   })),
 )
@@ -97,6 +100,13 @@ const resultClass = (value: RoundResult, pos: number) => {
 
   return pos <= 10 ? 'text-[#9C9CA1]' : 'text-[#68686D]'
 }
+
+/**
+ * The laurel badge for a podium finish, or `undefined` for anything else — a
+ * retirement marker is a string, so only a real position can earn one.
+ */
+const badgeOf = (value: RoundResult) =>
+  typeof value === 'number' ? getPodiumBadge(value) : undefined
 </script>
 
 <template>
@@ -175,7 +185,20 @@ const resultClass = (value: RoundResult, pos: number) => {
         :key="index"
         #[`cell(results.${index})`]="{ item, value }"
       >
-        <span :class="resultClass(value, item.pos)">{{ value ?? '—' }}</span>
+        <!-- One fixed box whether or not it is a badge, so a driver's podium
+             never makes their row taller than everyone else's. -->
+        <span
+          class="inline-flex h-6.5 w-7.5 items-center justify-center font-mono text-[12px]"
+          :class="!badgeOf(value) && resultClass(value, item.pos)"
+        >
+          <img
+            v-if="badgeOf(value)"
+            :src="badgeOf(value)"
+            :alt="String(value)"
+            class="h-4 w-auto"
+          />
+          <template v-else>{{ value ?? '—' }}</template>
+        </span>
       </template>
 
       <template #cell(pts)="{ item, value }">

@@ -44,7 +44,9 @@ const msUntilStart = computed(() => {
 })
 
 /** True from the moment the first qualifying session is due to begin. */
-const isLive = computed(() => msUntilStart.value !== null && msUntilStart.value <= 0)
+const isLive = computed(
+  () => msUntilStart.value !== null && msUntilStart.value <= 0,
+)
 
 const countdown = computed(() => {
   const diff = msUntilStart.value
@@ -172,10 +174,16 @@ onUnmounted(() => clearInterval(timer))
           hide-head
           class="w-full"
         />
-
-        <Button variant="outlined" size="lg" full @click="$emit('viewFullResult')">
-          VIEW FULL RESULT
-        </Button>
+        <router-link :to="`/calendar/${lastResult.roundId}/race`" class="w-full">
+          <Button
+            variant="outlined"
+            size="lg"
+            full
+            @click="$emit('viewFullResult')"
+          >
+            VIEW FULL RESULT
+          </Button>
+        </router-link>
       </template>
 
       <p v-else class="py-4 text-[13px] text-[#68686D]">

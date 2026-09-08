@@ -44,6 +44,11 @@ export interface LastResultRow {
 }
 
 export interface LastResult {
+  /**
+   * The round number itself, for linking through to the full result. Named
+   * apart from `NextRace.round`, which is the display label (`ROUND 3`).
+   */
+  roundId: number
   flag: string
   country: string
   title: string
@@ -57,7 +62,10 @@ const MS_PER_MINUTE = 60_000
  * @param startsAt A local datetime such as `2026-09-07T22:00:00`.
  * @param from Reference time, defaulting to now. Injectable so this stays testable.
  */
-export const formatCountdown = (startsAt: string, from: Date = new Date()): string => {
+export const formatCountdown = (
+  startsAt: string,
+  from: Date = new Date(),
+): string => {
   const minutes = Math.max(
     0,
     Math.floor((new Date(startsAt).getTime() - from.getTime()) / MS_PER_MINUTE),
@@ -95,8 +103,13 @@ export const useNextRace = (): ComputedRef<NextRace | undefined> => {
       name: `${next.country} GRAND PRIX`,
       circuit: getCircuit(next.country) ?? '',
       sessions: getSessions(round)
-        .filter((session) => session.key === quali?.key || session.key === 'race')
-        .map((session) => ({ label: session.name, value: sessionTime(session) })),
+        .filter(
+          (session) => session.key === quali?.key || session.key === 'race',
+        )
+        .map((session) => ({
+          label: session.name,
+          value: sessionTime(session),
+        })),
       countdown: startsAt ? formatCountdown(startsAt) : '',
       startsAt,
       startsLabel: quali?.name ?? 'RACE WEEKEND',
@@ -131,8 +144,9 @@ export const useLastResult = (): ComputedRef<LastResult | undefined> => {
           team: driver ? teams.getTeamName(teamId) : '',
         }
       })
-
+      
     return {
+      roundId: last.round,
       flag: last.flag,
       country: last.country,
       title: `ROUND ${last.round} · ${last.country}`,
