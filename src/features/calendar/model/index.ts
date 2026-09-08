@@ -1,5 +1,4 @@
 import { computed, type ComputedRef } from 'vue'
-import { useDriversStore } from '@/entities/driver/model/store'
 import { useRoundsStore } from '@/entities/round/model/store'
 import { getDriverCode } from '@/entities/driver/api'
 import { isPodiumFinish, type RaceType } from '@/entities/round/model'
@@ -8,7 +7,8 @@ export type { RaceType }
 
 export interface PodiumEntry {
   code: string
-  teamId: string
+  /** The team the drive counted for that round, not the driver's own seat. */
+  teamId: string | null
   /**
    * Race results carry no lap time in `data/rounds/`, so this is undefined for
    * race podiums and the card renders a dash.
@@ -44,7 +44,6 @@ export const todayISO = (): string => {
 /** The season calendar, each round joined with its podium if the race is done. */
 export const useCalendarRounds = (): ComputedRef<CalendarRound[]> => {
   const rounds = useRoundsStore()
-  const drivers = useDriversStore()
 
   return computed(() =>
     rounds.calendar.map((entry) => {
@@ -56,7 +55,7 @@ export const useCalendarRounds = (): ComputedRef<CalendarRound[]> => {
         .filter(isPodiumFinish)
         .map((result) => ({
           code: getDriverCode(result.driverId),
-          teamId: drivers.getDriverById(result.driverId)?.teamId ?? '',
+          teamId: rounds.getRoundTeam(entry.round, result.driverId),
         }))
 
       return podium.length ? { ...entry, podium } : { ...entry }

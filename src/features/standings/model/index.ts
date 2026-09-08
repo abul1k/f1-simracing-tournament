@@ -13,7 +13,8 @@ export interface DriverStanding {
   pos: number
   driver: string
   nationality: string
-  teamId: string
+  /** null for a reserve driver — `team` then reads `Reserve Driver`. */
+  teamId: string | null
   team: string
   results: RoundResult[]
   pts: number
@@ -59,7 +60,7 @@ export const useDriverStandings = (): ComputedRef<DriverStanding[]> => {
         pos: entry.position,
         driver: driver?.name ?? entry.driverId,
         nationality: driver?.country ?? '',
-        teamId: driver?.teamId ?? '',
+        teamId: driver?.teamId ?? null,
         team: driver ? teams.getTeamName(driver.teamId) : '',
         results: entry.results,
         pts: entry.points,
@@ -79,9 +80,11 @@ export const useConstructorStandings = (): ComputedRef<ConstructorStanding[]> =>
       pos: entry.position,
       teamId: entry.teamId,
       team: teams.getTeamName(entry.teamId),
-      drivers: drivers.drivers
-        .filter((driver) => driver.teamId === entry.teamId)
-        .map((driver) => driver.name),
+      // Contracted drivers plus any reserve who stood in for the team, as
+      // worked out by scripts/buildStandings.ts.
+      drivers: entry.driverIds.map(
+        (driverId) => drivers.getDriverById(driverId)?.name ?? driverId,
+      ),
       pts: entry.points,
     })),
   )

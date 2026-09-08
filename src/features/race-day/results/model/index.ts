@@ -11,7 +11,11 @@ export interface SessionResultRow {
   no: number
   driver: string
   code: string
-  teamId: string
+  /**
+   * The team this drive counted for — the one a reserve stood in for, not the
+   * driver's own seat. null when a reserve has no team recorded for the round.
+   */
+  teamId: string | null
   team: string
   /**
    * Qualifying only — race results carry no lap time in `data/rounds/`.
@@ -66,21 +70,25 @@ export const useSessionResults = (
 
     if (number === undefined || !key) return []
 
+    // The team column follows the round, not the contract: a reserve called up
+    // for this round shows the team they drove for, not `Reserve Driver`.
     const describe = (driverId: string) => {
       const driver = drivers.getDriverById(driverId)
+      const teamId = rounds.getRoundTeam(number, driverId)
 
       return {
         no: driver?.number ?? 0,
         driver: driver?.name ?? driverId,
         code: getDriverCode(driverId),
-        teamId: driver?.teamId ?? '',
-        team: driver ? teams.getTeamName(driver.teamId) : '',
+        teamId,
+        team: driver ? teams.getTeamName(teamId) : '',
       }
     }
 
     if (QUALIFYING_KEYS.includes(key)) {
       return rounds.getQualifyingResults(number).map((result) => ({
-        pos: result.position,
+        // A driver who never took part has no position — the marker stands in.
+        pos: result.position ?? statusLabel(result.status),
         ...describe(result.driverId),
         // Empty when the driver set no time — the table falls back to `status`.
         time: result.time,

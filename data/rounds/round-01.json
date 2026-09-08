@@ -80,9 +80,10 @@
         "status": "dsq"
       },
       {
-        "driverId": "DRV015",
+        "driverId": "DRV023",
         "position": 16,
         "time": "",
+        "racedFor": "TEAM_ALF",
         "status": "dsq"
       },
       {
@@ -92,20 +93,15 @@
         "status": "dsq"
       },
       {
-        "driverId": "DRV012",
+        "driverId": "DRV021",
         "position": 18,
         "time": "",
-        "status": "dnf"
+        "racedFor": "TEAM_REN",
+        "status": "dsq"
       },
       {
         "driverId": "DRV008",
         "position": 19,
-        "time": "",
-        "status": "dsq"
-      },
-      {
-        "driverId": "DRV001",
-        "position": 20,
         "time": "",
         "status": "dsq"
       }
@@ -160,15 +156,8 @@
         "gridPosition": 18,
         "status": "finished",
         "fastestLap": false,
-        "points": 8
-      },
-      {
-        "driverId": "DRV012",
-        "position": null,
-        "gridPosition": null,
-        "status": "dnf",
-        "fastestLap": false,
-        "points": 0
+        "points": 8,
+        "racedFor": "TEAM_REN"
       },
       {
         "driverId": "DRV019",
@@ -220,15 +209,15 @@
       },
       {
         "driverId": "DRV004",
-        "position": null,
+        "position": 13,
         "gridPosition": 13,
-        "status": "dnf",
+        "status": "finished",
         "fastestLap": false,
         "points": 0
       },
       {
         "driverId": "DRV008",
-        "position": null,
+        "position": 14,
         "gridPosition": 19,
         "status": "dnf",
         "fastestLap": false,
@@ -236,48 +225,41 @@
       },
       {
         "driverId": "DRV014",
-        "position": null,
+        "position": 15,
         "gridPosition": 12,
         "status": "dnf",
         "fastestLap": false,
         "points": 0
       },
       {
-        "driverId": "DRV015",
-        "position": null,
+        "driverId": "DRV023",
+        "position": 16,
         "gridPosition": 16,
         "status": "dnf",
-        "fastestLap": false,
-        "points": 0
-      },
-      {
-        "driverId": "DRV010",
-        "position": null,
-        "gridPosition": 5,
-        "status": "dnf",
+        "racedFor": "TEAM_ALF",
         "fastestLap": false,
         "points": 0
       },
       {
         "driverId": "DRV009",
-        "position": null,
+        "position": 18,
         "gridPosition": 4,
         "status": "dnf",
         "fastestLap": false,
         "points": 0
       },
       {
-        "driverId": "DRV005",
-        "position": null,
-        "gridPosition": 14,
+        "driverId": "DRV010",
+        "position": 17,
+        "gridPosition": 5,
         "status": "dnf",
         "fastestLap": false,
         "points": 0
       },
       {
-        "driverId": "DRV001",
-        "position": null,
-        "gridPosition": null,
+        "driverId": "DRV005",
+        "position": 19,
+        "gridPosition": 14,
         "status": "dnf",
         "fastestLap": false,
         "points": 0

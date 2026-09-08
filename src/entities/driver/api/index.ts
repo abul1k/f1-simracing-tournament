@@ -1,6 +1,6 @@
 import driversJson from '@data/drivers.json'
 import { getTeamById } from '@/entities/team/api'
-import type { Driver, DriverWithTeam } from '../model'
+import { isReserveDriver, type Driver, type DriverWithTeam } from '../model'
 
 const drivers = driversJson as Driver[]
 
@@ -40,6 +40,13 @@ const codes = ((): Map<string, string> => {
 
 /** Returns every registered driver, in `data/drivers.json` order. */
 export const getDrivers = (): Driver[] => drivers
+
+/** Drivers holding a permanent seat — everyone but the reserve pool. */
+export const getContractedDrivers = (): Driver[] =>
+  drivers.filter((driver) => !isReserveDriver(driver))
+
+/** The reserve pool: drivers with no seat, called up to stand in for a team. */
+export const getReserveDrivers = (): Driver[] => drivers.filter(isReserveDriver)
 
 /**
  * Looks up a single driver.

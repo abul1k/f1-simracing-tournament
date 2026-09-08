@@ -9,7 +9,8 @@ export interface DriverProfile {
   name: string
   number: number
   nationality: string
-  teamId: string
+  /** null for a reserve driver — `team` then reads `Reserve Driver`. */
+  teamId: string | null
   team: string
   pts: number
   wins: number

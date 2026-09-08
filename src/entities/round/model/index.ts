@@ -4,8 +4,12 @@ export type SessionStatus = 'pending' | 'completed'
 
 export type RaceResultStatus = 'finished' | 'dnf' | 'dsq' | 'dns'
 
-/** Marks a qualifying entry that set no lap time. Absent means a clean timed lap. */
-export type QualifyingResultStatus = 'dnf' | 'dsq'
+/**
+ * Marks a qualifying entry that set no lap time. Absent means a clean timed lap.
+ * `dns` is never typed by an admin — it is filled in for a contracted driver
+ * left out of the round file entirely. See `@/entities/round/lib`.
+ */
+export type QualifyingResultStatus = 'dnf' | 'dsq' | 'dns'
 
 /** One scheduled round, as listed in `data/calendar.json`. */
 export interface CalendarRound {
@@ -18,11 +22,14 @@ export interface CalendarRound {
 
 export interface QualifyingResult {
   driverId: string
-  position: number
+  /** null for a driver who took no part in the session at all — a `dns`. */
+  position: number | null
   /** `M:SS.mmm`, or empty for a driver who set no time — see `status`. */
   time: string
-  /** Omitted for a driver who set a time; `dnf`/`dsq` leaves `time` empty. */
+  /** Omitted for a driver who set a time; `dnf`/`dsq`/`dns` leaves `time` empty. */
   status?: QualifyingResultStatus
+  /** Team this drive counts for; omitted when it is the driver's own team. */
+  racedFor?: string
 }
 
 /** True when a qualifying entry has no lap time to show. */
@@ -30,13 +37,24 @@ export const hasNoLapTime = (result: QualifyingResult): boolean => !result.time
 
 export interface RaceResult {
   driverId: string
-  /** null for a retirement — a `dnf`/`dsq`/`dns` has no classified finishing position. */
+  /**
+   * Where the driver is classified. A retirement can still be classified — a
+   * `dnf` or `dsq` keeps the place it dropped out in — so this is only `null`
+   * for a driver left out of the classification, always including a `dns`.
+   * Points and podiums read `status`, never this, so a classified retirement
+   * scores nothing.
+   */
   position: number | null
   /** null when the driver took no grid slot, e.g. a `dns`. */
   gridPosition: number | null
   status: RaceResultStatus
   fastestLap: boolean
   points: number
+  /**
+   * The team this drive counts for in the constructors' table. Omitted when it
+   * is the driver's own team; required for a reserve driver standing in.
+   */
+  racedFor?: string
 }
 
 export interface RoundQualifying {

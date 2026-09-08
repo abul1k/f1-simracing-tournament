@@ -21,7 +21,7 @@ const HEX_COLOR_PATTERN = /^#[0-9A-Fa-f]{6}$/
 export const SESSION_STATUSES = ['pending', 'completed'] as const
 export const RACE_RESULT_STATUSES = ['finished', 'dnf', 'dsq', 'dns'] as const
 /** Only set on a qualifying entry with no lap time; omitted for a timed lap. */
-export const QUALIFYING_RESULT_STATUSES = ['dnf', 'dsq'] as const
+export const QUALIFYING_RESULT_STATUSES = ['dnf', 'dsq', 'dns'] as const
 export const RACE_TYPES = ['FEATURE RACE', 'SPRINT RACE'] as const
 export const CHAMPIONSHIP_STATUSES = ['active', 'completed', 'upcoming'] as const
 export const FASTEST_LAP_ELIGIBILITY = ['top10', 'any'] as const
@@ -77,7 +77,9 @@ export const driversSchema: Spec = {
       id: { kind: 'string', pattern: /^DRV\d{3}$/ },
       name: { kind: 'string', minLength: 1 },
       number: { kind: 'number', integer: true, min: 1, max: 99 },
-      teamId: { kind: 'string', pattern: /^TEAM_[A-Z0-9]+$/ },
+      // null marks a reserve driver — no permanent seat. The team they stand in
+      // for is recorded per round, as `racedFor` on that round's results.
+      teamId: { kind: 'string', pattern: /^TEAM_[A-Z0-9]+$/, nullable: true },
       country: { kind: 'string', minLength: 2 },
     },
   },
@@ -111,14 +113,17 @@ export const roundSchema: Spec = {
           of: {
             kind: 'object',
             // `status` says why an entry has no lap time; validateData
-            // requires one whenever `time` is empty.
-            optional: ['status'],
+            // requires one whenever `time` is empty. `racedFor` is only needed
+            // for a driver standing in for a team — see validateData.
+            optional: ['status', 'racedFor'],
             fields: {
               driverId: { kind: 'string', pattern: /^DRV\d{3}$/ },
-              position: { kind: 'number', integer: true, min: 1 },
+              // null for a driver who took no part at all, i.e. a `dns`.
+              position: { kind: 'number', integer: true, min: 1, nullable: true },
               // Empty for a driver who set no lap time — see `status`.
               time: { kind: 'string', pattern: LAP_TIME_PATTERN, allowEmpty: true },
               status: { kind: 'string', enum: QUALIFYING_RESULT_STATUSES },
+              racedFor: { kind: 'string', pattern: /^TEAM_[A-Z0-9]+$/ },
             },
           },
         },
@@ -134,17 +139,22 @@ export const roundSchema: Spec = {
             kind: 'object',
             // `fastestLap` and `points` may be omitted by admins:
             // `scripts/calculatePoints.ts` fills both in before the site builds.
-            optional: ['fastestLap', 'points'],
+            // `racedFor` is only needed for a driver standing in for a team.
+            optional: ['fastestLap', 'points', 'racedFor'],
             fields: {
               driverId: { kind: 'string', pattern: /^DRV\d{3}$/ },
-              // null for a `dnf`/`dsq`/`dns`; validateData requires a number when
-              // the driver is `finished`.
+              // A classified retirement may carry a position; null leaves the
+              // driver out of the classification. validateData requires a
+              // number when the driver is `finished`, and null for a `dns`.
               position: { kind: 'number', integer: true, min: 1, nullable: true },
               // null when the driver took no grid slot, e.g. a `dns`.
               gridPosition: { kind: 'number', integer: true, min: 1, nullable: true },
               status: { kind: 'string', enum: RACE_RESULT_STATUSES },
               fastestLap: { kind: 'boolean' },
               points: { kind: 'number', integer: true, min: 0 },
+              // The team this drive counts for in the constructors' table.
+              // Defaults to the driver's own `teamId` when absent.
+              racedFor: { kind: 'string', pattern: /^TEAM_[A-Z0-9]+$/ },
             },
           },
         },

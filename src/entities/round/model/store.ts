@@ -9,6 +9,7 @@ import {
   getQualifyingResults,
   getRaceResults,
   getRoundResults,
+  getRoundTeam,
 } from '../api'
 
 export const useRoundsStore = defineStore('rounds', () => {
@@ -26,5 +27,6 @@ export const useRoundsStore = defineStore('rounds', () => {
     getRoundResults,
     getRaceResults,
     getQualifyingResults,
+    getRoundTeam,
   }
 })

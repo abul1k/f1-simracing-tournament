@@ -7,7 +7,8 @@ import { useTeamsStore } from '@/entities/team/model/store'
 export interface StandingRow {
   pos: number
   driver: string
-  teamId: string
+  /** null for a reserve driver — `team` then reads `Reserve Driver`. */
+  teamId: string | null
   team: string
   pts: number
   country: string
@@ -47,7 +48,7 @@ export const useChampionshipStandings = (): ComputedRef<StandingRow[]> => {
       return {
         pos: entry.position,
         driver: driver?.name ?? entry.driverId,
-        teamId: driver?.teamId ?? '',
+        teamId: driver?.teamId ?? null,
         team: driver ? teams.getTeamName(driver.teamId) : '',
         pts: entry.points,
         country: driver?.country ?? '',

@@ -35,7 +35,7 @@ export const useSeasonHeader = (): ComputedRef<SeasonHeader> => {
   })
 }
 
-/** The four counters under the season banner. */
+/** The counters under the season banner. */
 export const useSeasonInfo = (): ComputedRef<InfoItem[]> => {
   const championship = useChampionshipStore()
   const drivers = useDriversStore()
@@ -49,6 +49,7 @@ export const useSeasonInfo = (): ComputedRef<InfoItem[]> => {
     return [
       { value: total, label: 'ROUNDS' },
       { value: drivers.driverCount, label: 'DRIVERS' },
+      { value: drivers.reserveCount, label: 'RESERVES' },
       { value: teams.teamCount, label: 'TEAMS' },
       { value: `ROUND ${done} / ${total}`, label: 'SEASON PROGRESS' },
     ]

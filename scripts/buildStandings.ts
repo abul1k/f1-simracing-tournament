@@ -5,6 +5,11 @@
  * round files in the browser. Rounds whose `race.status` is not `completed`
  * are skipped entirely, so a half-entered round never leaks onto the site.
  *
+ * Drivers' points follow the driver. Constructors' points follow the car: a
+ * result counts for the team named by `racedFor`, so a reserve standing in for
+ * a team banks the points for that team while keeping them for themselves.
+ * Absent contracted drivers are counted as a `dns` — see `raceEntries`.
+ *
  * Tie-break (both tables): most wins, then most 2nd places, then 3rds, and so
  * on until the tie breaks — the standard countback rule. Drivers still level
  * are ordered by car number; teams by their order in `data/teams.json`.
@@ -13,6 +18,8 @@
  */
 
 import type { Driver } from '../src/entities/driver/model/index.ts'
+import { outcomeOf } from '../src/entities/round/model/index.ts'
+import { raceEntries, teamForRound } from '../src/entities/round/lib/index.ts'
 import type { RaceResult, Round, RoundOutcome } from '../src/entities/round/model/index.ts'
 import type { Team } from '../src/entities/team/model/index.ts'
 import type {
@@ -38,15 +45,6 @@ const completedRounds = listRoundFiles()
   .sort((a, b) => a.round - b.round)
 
 const roundNumbers = completedRounds.map((round) => round.round)
-
-/** Turns a race result into the marker shown in a results grid. */
-const outcomeOf = (result: RaceResult): RoundOutcome => {
-  if (result.status === 'dnf') return 'DNF'
-  if (result.status === 'dsq') return 'DSQ'
-  if (result.status === 'dns') return 'DNS'
-
-  return result.position ?? '—'
-}
 
 /**
  * Counts finishing positions, indexed by position (`counts[1]` = wins).
@@ -92,8 +90,15 @@ const tallies = new Map<string, Tally>(
   drivers.map((driver) => [driver.id, emptyTally()]),
 )
 
+/** Every completed round's classification, absent entrants filled in as `dns`. */
+const classifications = new Map<number, RaceResult[]>(
+  completedRounds.map((round) => [round.round, raceEntries(round, drivers)]),
+)
+
 completedRounds.forEach((round) => {
-  const byDriver = new Map(round.race.results.map((result) => [result.driverId, result]))
+  const byDriver = new Map(
+    (classifications.get(round.round) ?? []).map((result) => [result.driverId, result]),
+  )
 
   drivers.forEach((driver) => {
     const tally = tallies.get(driver.id)
@@ -102,6 +107,8 @@ completedRounds.forEach((round) => {
 
     const result = byDriver.get(driver.id)
 
+    // No entry at all means the driver was not an entrant — a reserve who was
+    // not called up. An absent contracted driver is a `dns`, not a blank.
     if (!result) {
       tally.outcomes.push('—')
 
@@ -152,29 +159,66 @@ const driverStandings: DriverStandingEntry[] = drivers
 
 const teamOrder = new Map(teams.map((team, index) => [team.id, index]))
 
-const driversByTeam = new Map<string, Driver[]>(
-  teams.map((team) => [
-    team.id,
-    drivers.filter((driver) => driver.teamId === team.id),
-  ]),
+const driverById = new Map(drivers.map((driver) => [driver.id, driver]))
+
+interface TeamTally {
+  points: number
+  results: RaceResult[]
+  /** Everyone who drove the car, contracted or standing in. */
+  drove: Set<string>
+}
+
+const teamTallies = new Map<string, TeamTally>(
+  teams.map((team) => [team.id, { points: 0, results: [], drove: new Set<string>() }]),
 )
+
+// Contracted drivers belong to their team's line-up whether they raced or not.
+drivers.forEach((driver) => {
+  if (driver.teamId === null) return
+
+  teamTallies.get(driver.teamId)?.drove.add(driver.id)
+})
+
+/**
+ * A car's result counts for the team it was entered by. That is the driver's
+ * own team unless the round recorded a `racedFor`, which is how a reserve
+ * called up to stand in banks the points for the team they drove for.
+ */
+completedRounds.forEach((round) => {
+  ;(classifications.get(round.round) ?? []).forEach((result) => {
+    const teamId = teamForRound(round, driverById.get(result.driverId))
+
+    if (teamId === null) return
+
+    const tally = teamTallies.get(teamId)
+
+    if (!tally) return
+
+    tally.points += result.points ?? 0
+    tally.results.push(result)
+    // A stand-in only joins the line-up once they have actually driven.
+    if (result.status !== 'dns') tally.drove.add(result.driverId)
+  })
+})
 
 const constructorStandings: ConstructorStandingEntry[] = teams
   .map((team) => {
-    const roster = driversByTeam.get(team.id) ?? []
-    const results = roster.flatMap((driver) => tallies.get(driver.id)?.results ?? [])
-    const points = roster.reduce(
-      (sum, driver) => sum + (tallies.get(driver.id)?.points ?? 0),
-      0,
-    )
+    const tally = teamTallies.get(team.id) ?? {
+      points: 0,
+      results: [] as RaceResult[],
+      drove: new Set<string>(),
+    }
 
     return {
       position: 0,
       teamId: team.id,
-      points,
-      wins: winsOf(results),
-      podiums: podiumsOf(results),
-      countback: countbackOf(results),
+      points: tally.points,
+      wins: winsOf(tally.results),
+      podiums: podiumsOf(tally.results),
+      driverIds: drivers
+        .filter((driver) => tally.drove.has(driver.id))
+        .map((driver) => driver.id),
+      countback: countbackOf(tally.results),
     }
   })
   .sort((a, b) => {

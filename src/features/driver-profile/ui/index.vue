@@ -50,6 +50,7 @@ const historyFields: TableField[] = [
     class: 'font-mono text-[13px] font-bold text-[#9C9CA1]',
   },
   { key: 'circuit', label: 'CIRCUIT', class: 'text-[13px] text-[#F4F4F2]' },
+  { key: 'team', label: 'TEAM', width: '170px' },
   { key: 'qualifying', label: 'QUALIFYING', width: '120px' },
   { key: 'finish', label: 'FINISH', width: '100px' },
   {
@@ -290,9 +291,19 @@ const positionLabel = (value: number | string | null) =>
         :fields="historyFields"
         :items="history"
         row-key="round"
-        min-width="640px"
+        min-width="760px"
         row-padding="px-5 py-3"
       >
+        <template #cell(team)="{ item, value }">
+          <div class="flex items-center gap-2">
+            <span
+              class="h-[7px] w-[7px] shrink-0 rounded-full"
+              :style="{ backgroundColor: teamColor(item.teamId) }"
+            ></span>
+            <span class="truncate text-[13px] text-[#9C9CA1]">{{ value }}</span>
+          </div>
+        </template>
+
         <template #cell(qualifying)="{ value }">
           <span class="font-mono text-[13px] text-[#9C9CA1]">
             {{ positionLabel(value) }}

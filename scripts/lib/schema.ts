@@ -20,6 +20,8 @@ export type Spec =
       minLength?: number
       /** Accepts `""` as a deliberate "no value", skipping the other checks. */
       allowEmpty?: boolean
+      /** Accepts `null` as a deliberate "no value", e.g. a driver with no team. */
+      nullable?: boolean
     }
   | { kind: 'number'; integer?: boolean; min?: number; max?: number; nullable?: boolean }
   | { kind: 'boolean' }
@@ -62,8 +64,12 @@ export const validate = (
   }
 
   if (spec.kind === 'string') {
+    if (spec.nullable && value === null) return
+
     if (typeof value !== 'string') {
-      return fail(`must be a string, got ${typeName(value)}`)
+      const suffix = spec.nullable ? ' or null' : ''
+
+      return fail(`must be a string${suffix}, got ${typeName(value)}`)
     }
     if (spec.allowEmpty && value === '') return
 

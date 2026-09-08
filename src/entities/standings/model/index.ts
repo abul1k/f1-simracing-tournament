@@ -16,6 +16,11 @@ export interface ConstructorStandingEntry {
   points: number
   wins: number
   podiums: number
+  /**
+   * Everyone who drove for the team this season: its contracted drivers, plus
+   * any reserve called up to stand in for it. In `data/drivers.json` order.
+   */
+  driverIds: string[]
 }
 
 /** The generated `data/standings.json` — the only standings source the app reads. */

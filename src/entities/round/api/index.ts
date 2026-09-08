@@ -1,4 +1,6 @@
 import calendarJson from '@data/calendar.json'
+import { getDriverById, getDrivers } from '@/entities/driver/api'
+import { qualifyingEntries, raceEntries, teamForRound } from '../lib'
 import type { CalendarRound, QualifyingResult, RaceResult, Round } from '../model'
 
 const calendar = calendarJson as CalendarRound[]
@@ -34,6 +36,10 @@ export const getRoundResults = (round: number): Round | undefined => byRound.get
 
 /**
  * Race classification for a round, empty unless the race is marked `completed`.
+ *
+ * Contracted drivers the round file leaves out are included as `dns` — see
+ * `raceEntries` in `../lib` for why, and why reserve drivers are not.
+ *
  * @param round 1-based round number.
  */
 export const getRaceResults = (round: number): RaceResult[] => {
@@ -41,14 +47,13 @@ export const getRaceResults = (round: number): RaceResult[] => {
 
   if (!entry || entry.race.status !== 'completed') return []
 
-  // Classified finishers in order, then retirements (position null) last.
-  return [...entry.race.results].sort(
-    (a, b) => (a.position ?? Number.MAX_SAFE_INTEGER) - (b.position ?? Number.MAX_SAFE_INTEGER),
-  )
+  return raceEntries(entry, getDrivers())
 }
 
 /**
  * Qualifying classification for a round, empty unless qualifying is `completed`.
+ * Absent contracted drivers are included as `dns`, as in `getRaceResults`.
+ *
  * @param round 1-based round number.
  */
 export const getQualifyingResults = (round: number): QualifyingResult[] => {
@@ -56,8 +61,19 @@ export const getQualifyingResults = (round: number): QualifyingResult[] => {
 
   if (!entry || entry.qualifying.status !== 'completed') return []
 
-  return [...entry.qualifying.results].sort((a, b) => a.position - b.position)
+  return qualifyingEntries(entry, getDrivers())
 }
+
+/**
+ * The team a driver represented in one round — the team a reserve stood in for,
+ * or the driver's own seat.
+ *
+ * @param round 1-based round number.
+ * @param driverId A driver id such as `DRV021`.
+ * @returns A team id, or `null` for a reserve with no team recorded that round.
+ */
+export const getRoundTeam = (round: number, driverId: string): string | null =>
+  teamForRound(byRound.get(round), getDriverById(driverId))
 
 /** Round numbers whose race is marked `completed`, ascending. */
 export const getCompletedRounds = (): number[] =>

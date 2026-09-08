@@ -39,7 +39,7 @@ export interface LastResultRow {
   pos: number | string
   name: string
   code: string
-  teamId: string
+  teamId: string | null
   team: string
 }
 
@@ -120,13 +120,15 @@ export const useLastResult = (): ComputedRef<LastResult | undefined> => {
       .filter(isPodiumFinish)
       .map((result) => {
         const driver = drivers.getDriverById(result.driverId)
+        // The livery shown is the one the drive counted for that round.
+        const teamId = rounds.getRoundTeam(last.round, result.driverId)
 
         return {
           pos: result.position,
           name: driver?.name ?? result.driverId,
           code: getDriverCode(result.driverId),
-          teamId: driver?.teamId ?? '',
-          team: driver ? teams.getTeamName(driver.teamId) : '',
+          teamId,
+          team: driver ? teams.getTeamName(teamId) : '',
         }
       })
 

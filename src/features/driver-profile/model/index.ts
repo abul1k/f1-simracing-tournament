@@ -11,6 +11,9 @@ export interface HistoryEntry {
   round: number
   label: string
   circuit: string
+  /** The team the drive counted for — what a reserve stood in for that round. */
+  teamId: string | null
+  team: string
   qualifying: number | null
   finish: number | string
   points: number
@@ -33,7 +36,8 @@ export interface ProfileHeader {
   name: string
   number: number
   nationality: string
-  teamId: string
+  /** null for a reserve driver — `team` then reads `Reserve Driver`. */
+  teamId: string | null
   team: string
   pos: number
   pts: number
@@ -92,6 +96,7 @@ export const useDriverHistory = (
   driverId: ComputedRef<string | undefined>,
 ): ComputedRef<HistoryEntry[]> => {
   const rounds = useRoundsStore()
+  const teams = useTeamsStore()
 
   return computed(() => {
     const id = driverId.value
@@ -113,12 +118,15 @@ export const useDriverHistory = (
       cumulative += race.points
 
       const finish = outcomeOf(race)
+      const teamId = rounds.getRoundTeam(round, id)
 
       return [
         {
           round,
           label: `R${round}`,
           circuit: getCircuit(calendarRound?.country) ?? '',
+          teamId,
+          team: teams.getTeamName(teamId),
           qualifying: qualifying?.position ?? null,
           finish,
           points: race.points,

@@ -1,5 +1,6 @@
 import teamsJson from '@data/teams.json'
-import type { Team } from '../model'
+import { FALLBACK_COLOR } from '@/shared/lib/color'
+import { NO_TEAM_LABEL, type Team } from '../model'
 
 const teams = teamsJson as Team[]
 
@@ -10,16 +11,24 @@ export const getTeams = (): Team[] => teams
 
 /**
  * Looks up a single team.
- * @param id A team id such as `TEAM_MER`.
+ * @param id A team id such as `TEAM_MER`, or `null` for a driver with no team.
  * @returns The team, or `undefined` if no team carries that id.
  */
-export const getTeamById = (id: string): Team | undefined => byId.get(id)
+export const getTeamById = (id: string | null): Team | undefined =>
+  id === null ? undefined : byId.get(id)
 
 /**
- * The team's livery colour, falling back to neutral grey for an unknown id.
- * @param id A team id such as `TEAM_MER`.
+ * The team's livery colour, falling back to neutral grey for an unknown id and
+ * for `null` — a reserve driver has no livery of their own.
+ * @param id A team id such as `TEAM_MER`, or `null`.
  */
-export const getTeamColor = (id: string): string => byId.get(id)?.color ?? '#68686D'
+export const getTeamColor = (id: string | null): string =>
+  getTeamById(id)?.color ?? FALLBACK_COLOR
 
-/** The team's display name, falling back to the raw id if it is unknown. */
-export const getTeamName = (id: string): string => byId.get(id)?.name ?? id
+/**
+ * The team's display name.
+ * @param id A team id such as `TEAM_MER`, or `null` for a driver with no team.
+ * @returns The team name, `Reserve Driver` for `null`, or the raw id if unknown.
+ */
+export const getTeamName = (id: string | null): string =>
+  id === null ? NO_TEAM_LABEL : (byId.get(id)?.name ?? id)
