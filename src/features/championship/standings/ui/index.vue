@@ -58,7 +58,9 @@ const podium = computed(() =>
 const expanded = ref(false)
 
 const visible = computed(() =>
-  expanded.value ? standings.value : standings.value.slice(0, props.previewCount),
+  expanded.value
+    ? standings.value
+    : standings.value.slice(0, props.previewCount),
 )
 
 const expandable = computed(() => standings.value.length > props.previewCount)
@@ -97,10 +99,11 @@ const expandable = computed(() => standings.value.length > props.previewCount)
     <div
       class="flex flex-col items-stretch gap-5 pb-5 md:flex-row md:items-end"
     >
-      <div
+      <router-link
         v-for="driver in podium"
+        :to="`/drivers/${driver.driver.toLowerCase().replace(' ', '-')}`"
         :key="driver.driver"
-        class="flex flex-1 items-end overflow-hidden rounded-[3px]"
+        class="flex flex-1 items-end overflow-hidden rounded-[3px] cursor-pointer"
         :class="driver.pos === 1 && 'order-first md:order-none'"
         :style="{
           height: podiumHeights[driver.pos],
@@ -152,7 +155,7 @@ const expandable = computed(() => standings.value.length > props.previewCount)
             >
           </div>
         </div>
-      </div>
+      </router-link>
     </div>
 
     <Table
@@ -186,9 +189,7 @@ const expandable = computed(() => standings.value.length > props.previewCount)
       class="mt-4"
       @click="expanded = !expanded"
     >
-      {{
-        expanded ? 'SHOW LESS' : `SHOW ALL ${standings.length} DRIVERS`
-      }}
+      {{ expanded ? 'SHOW LESS' : `SHOW ALL ${standings.length} DRIVERS` }}
     </Button>
   </section>
 </template>

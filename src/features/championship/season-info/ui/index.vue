@@ -20,7 +20,9 @@ defineEmits<{
         <p class="text-[12px] font-bold tracking-[1.2px] text-[#C13B33]">
           {{ header.eyebrow }}
         </p>
-        <h1 class="text-[40px] font-extrabold text-[#F4F4F2]">{{ header.title }}</h1>
+        <h1 class="text-[40px] font-extrabold text-[#F4F4F2]">
+          {{ header.title }}
+        </h1>
         <div class="flex items-center gap-2.5 text-[13px]">
           <img
             v-if="getFlag(header.region)"
@@ -37,20 +39,30 @@ defineEmits<{
       <div class="flex flex-col items-start gap-3.5 lg:items-end">
         <Badge variant="green">{{ header.status }}</Badge>
         <div class="flex gap-3">
-          <Button variant="filled" @click="$emit('viewStandings')">VIEW STANDINGS</Button>
-          <Button variant="outlined" @click="$emit('viewNextRace')">NEXT RACE</Button>
+          <router-link to="/standings">
+            <Button variant="filled">VIEW STANDINGS</Button>
+          </router-link>
+          <Button variant="outlined" @click="$emit('viewNextRace')"
+            >NEXT RACE</Button
+          >
         </div>
       </div>
     </div>
 
-    <div class="flex w-full flex-col border border-[#2A2A2E] bg-[#141416] lg:flex-row">
+    <div
+      class="flex w-full flex-col border border-[#2A2A2E] bg-[#141416] lg:flex-row"
+    >
       <div
         v-for="(item, index) in info"
         :key="item.label"
         class="flex flex-1 flex-col gap-1 px-6 py-4.5"
-        :class="index > 0 && 'border-t border-[#2A2A2E] lg:border-t-0 lg:border-l'"
+        :class="
+          index > 0 && 'border-t border-[#2A2A2E] lg:border-t-0 lg:border-l'
+        "
       >
-        <span class="font-mono text-[22px] font-semibold whitespace-nowrap text-[#F4F4F2]">
+        <span
+          class="font-mono text-[22px] font-semibold whitespace-nowrap text-[#F4F4F2]"
+        >
           {{ item.value }}
         </span>
         <span class="text-[11px] font-semibold tracking-[0.8px] text-[#68686D]">
