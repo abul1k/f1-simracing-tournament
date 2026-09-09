@@ -69,7 +69,7 @@ const positionLabel = (value: number | string | null) =>
   <section v-if="props.driver" class="flex w-full flex-col gap-4">
     <RouterLink
       :to="{ name: 'drivers' }"
-      class="flex w-fit items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-[#C13B33] transition-opacity hover:opacity-75"
+      class="flex w-fit items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-racing-red transition-opacity hover:opacity-75"
     >
       <svg
         class="h-3.5 w-3.5"
@@ -131,7 +131,7 @@ const positionLabel = (value: number | string | null) =>
           CHAMPIONSHIP POSITION
         </span>
         <div class="flex items-end gap-3">
-          <span class="font-mono text-[34px] font-extrabold text-[#C13B33]">
+          <span class="font-mono text-[34px] font-extrabold text-racing-red">
             P{{ props.driver.pos }}
           </span>
           <span class="pb-1.5 text-[14px] font-bold text-[#F4F4F2]">
@@ -184,7 +184,7 @@ const positionLabel = (value: number | string | null) =>
                 {{ positionLabel(entry.finish) }}
               </span>
               <div
-                class="w-[26px] bg-[#C13B33]"
+                class="w-[26px] bg-racing-red"
                 :style="{ height: `${positionHeight(entry.finish)}px` }"
               ></div>
             </div>
@@ -248,7 +248,7 @@ const positionLabel = (value: number | string | null) =>
                 <span class="text-[10px] font-bold text-[#68686D]">QUALI</span>
               </span>
               <span class="flex items-center gap-1.5">
-                <span class="h-2 w-2 bg-[#C13B33]"></span>
+                <span class="h-2 w-2 bg-racing-red"></span>
                 <span class="text-[10px] font-bold text-[#68686D]">RACE</span>
               </span>
             </div>
@@ -265,7 +265,7 @@ const positionLabel = (value: number | string | null) =>
                 :style="{ height: `${positionHeight(entry.qualifying)}px` }"
               ></div>
               <div
-                class="w-4 bg-[#C13B33]"
+                class="w-4 bg-racing-red"
                 :style="{ height: `${positionHeight(entry.finish)}px` }"
               ></div>
             </div>
@@ -313,7 +313,7 @@ const positionLabel = (value: number | string | null) =>
         <template #cell(finish)="{ value }">
           <span
             class="font-mono text-[13px] font-bold"
-            :class="value === 1 ? 'text-[#C13B33]' : 'text-[#F4F4F2]'"
+            :class="value === 1 ? 'text-racing-red' : 'text-[#F4F4F2]'"
           >
             {{ positionLabel(value) }}
           </span>
@@ -326,7 +326,7 @@ const positionLabel = (value: number | string | null) =>
     <h1 class="text-[30px] font-extrabold text-[#F4F4F2]">DRIVER NOT FOUND</h1>
     <RouterLink
       :to="{ name: 'drivers' }"
-      class="text-[12px] font-bold tracking-[0.5px] text-[#C13B33]"
+      class="text-[12px] font-bold tracking-[0.5px] text-racing-red"
     >
       BACK TO DRIVERS
     </RouterLink>

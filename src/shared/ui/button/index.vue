@@ -25,11 +25,11 @@ const props = withDefaults(
 
 const variants: Record<Variant, { base: string; disabled: string }> = {
   filled: {
-    base: 'bg-[#C13B33] text-white hover:bg-[#A8322B]',
+    base: 'bg-racing-red text-white hover:bg-[#A8322B]',
     disabled: 'bg-[#2A2A2E] text-[#68686D]',
   },
   outlined: {
-    base: 'border border-[#38383C] text-[#F4F4F2] hover:border-[#F4F4F2]',
+    base: 'border border-still-gray text-[#F4F4F2] hover:border-silver',
     disabled: 'border border-[#2A2A2E] text-[#68686D]',
   },
 }

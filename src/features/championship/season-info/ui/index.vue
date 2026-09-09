@@ -17,7 +17,7 @@ defineEmits<{
   <section class="flex w-full flex-col gap-9">
     <div class="flex flex-col items-start justify-between gap-6 lg:flex-row">
       <div class="flex flex-col items-start gap-2.5">
-        <p class="text-[12px] font-bold tracking-[1.2px] text-[#C13B33]">
+        <p class="text-[12px] font-bold tracking-[1.2px] text-racing-red">
           {{ header.eyebrow }}
         </p>
         <h1 class="text-[40px] font-extrabold text-[#F4F4F2]">

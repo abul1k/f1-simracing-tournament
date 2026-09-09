@@ -34,7 +34,7 @@ const sessions = computed(() => getSessions(props.round))
     <div class="flex flex-col gap-2.5">
       <RouterLink
         :to="{ name: 'calendar' }"
-        class="flex w-fit items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-[#C13B33] transition-opacity hover:opacity-75"
+        class="flex w-fit items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-racing-red transition-opacity hover:opacity-75"
       >
         <svg
           class="h-3.5 w-3.5"
@@ -127,7 +127,7 @@ const sessions = computed(() => getSessions(props.round))
     <h1 class="text-[30px] font-extrabold text-[#F4F4F2]">RACE NOT FOUND</h1>
     <RouterLink
       :to="{ name: 'calendar' }"
-      class="text-[12px] font-bold tracking-[0.5px] text-[#C13B33]"
+      class="text-[12px] font-bold tracking-[0.5px] text-racing-red"
     >
       BACK TO CALENDAR
     </RouterLink>

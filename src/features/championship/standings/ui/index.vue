@@ -76,7 +76,7 @@ const expandable = computed(() => standings.value.length > props.previewCount)
       <router-link
         to="/standings"
         type="button"
-        class="flex items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-[#C13B33] transition-opacity hover:opacity-75"
+        class="flex items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-racing-red transition-opacity hover:opacity-75"
         @click="$emit('viewFull')"
       >
         FULL STANDINGS

@@ -30,7 +30,7 @@ export const useSeasonHeader = (): ComputedRef<SeasonHeader> => {
       title: `Season ${season}`,
       region,
       game: `${game} · ${platform}`,
-      status: `STATUS: ${status === 'active' ? 'LIVE' : status.toUpperCase()}`,
+      status: `STATUS: ${status === 'active' ? 'ACTIVE' : status.toUpperCase()}`,
     }
   })
 }

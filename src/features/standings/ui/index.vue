@@ -96,7 +96,7 @@ const tableWidth = computed(
 )
 
 const resultClass = (value: RoundResult, pos: number) => {
-  if (isRetired(value)) return 'font-semibold text-[#C13B33]'
+  if (isRetired(value)) return 'font-semibold text-racing-red'
 
   return pos <= 10 ? 'text-[#9C9CA1]' : 'text-[#68686D]'
 }
@@ -112,7 +112,7 @@ const badgeOf = (value: RoundResult) =>
 <template>
   <section class="flex w-full flex-col gap-6">
     <div class="flex flex-col gap-1.5">
-      <p class="text-[12px] font-bold tracking-[1.2px] text-[#C13B33]">
+      <p class="text-[12px] font-bold tracking-[1.2px] text-racing-red">
         {{ eyebrow }}
       </p>
       <h1 class="text-[30px] font-extrabold text-[#F4F4F2]">

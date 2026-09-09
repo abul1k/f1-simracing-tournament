@@ -38,7 +38,7 @@ const hasResults = (item: CalendarRound) => Boolean(item.podium?.length)
 <template>
   <section class="flex w-full flex-col gap-7">
     <div class="flex flex-col gap-1.5">
-      <p class="text-[12px] font-bold tracking-[1.2px] text-[#C13B33]">{{ eyebrow }}</p>
+      <p class="text-[12px] font-bold tracking-[1.2px] text-racing-red">{{ eyebrow }}</p>
       <h1 class="text-[30px] font-extrabold text-[#F4F4F2]">{{ title }}</h1>
     </div>
 

@@ -6,7 +6,7 @@ import Footer from '@/widgets/footer/index.vue'
 <template>
   <div>
     <Navbar />
-    <main class="max-w-360 mx-auto">
+    <main class="max-w-360 lg:px-0 px-4 mx-auto">
       <router-view />
     </main>
     <Footer />

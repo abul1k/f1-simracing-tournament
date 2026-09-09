@@ -19,7 +19,7 @@ const props = withDefaults(
 
 const variants: Record<Variant, { wrapper: string; dot: string }> = {
   green: { wrapper: 'bg-[#16261B] text-[#3FA35C]', dot: 'bg-[#3FA35C]' },
-  red: { wrapper: 'bg-[#2F1412] text-[#C13B33]', dot: 'bg-[#C13B33]' },
+  red: { wrapper: 'bg-[#2F1412] text-racing-red', dot: 'bg-racing-red' },
   yellow: { wrapper: 'bg-[#332915] text-[#D9A441]', dot: 'bg-[#D9A441]' },
   gray: { wrapper: 'bg-[#232326] text-[#9C9CA1]', dot: 'bg-[#9C9CA1]' },
 }

@@ -21,7 +21,7 @@ withDefaults(
   <div class="flex flex-col gap-9 bg-[#0A0A0B] pt-10 pb-16">
     <section class="flex w-full flex-col gap-6">
       <div class="flex flex-col gap-1.5">
-        <p class="text-[12px] font-bold tracking-[1.2px] text-[#C13B33]">
+        <p class="text-[12px] font-bold tracking-[1.2px] text-racing-red">
           {{ eyebrow }}
         </p>
         <h1 class="text-[30px] font-extrabold text-[#F4F4F2]">{{ title }}</h1>
@@ -37,7 +37,7 @@ withDefaults(
             v-for="block in 8"
             :key="block"
             class="h-full flex-1"
-            :class="block % 2 ? 'bg-[#C13B33]' : 'bg-[#F4F4F2]'"
+            :class="block % 2 ? 'bg-racing-red' : 'bg-[#F4F4F2]'"
           ></span>
         </div>
 
@@ -49,7 +49,7 @@ withDefaults(
 
         <RouterLink
           to="/"
-          class="mt-2 flex items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-[#C13B33] transition-opacity hover:opacity-75"
+          class="mt-2 flex items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-racing-red transition-opacity hover:opacity-75"
         >
           <svg
             class="h-3.5 w-3.5"

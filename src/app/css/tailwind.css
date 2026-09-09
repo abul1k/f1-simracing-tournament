@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+@theme {
+  /* colors */
+  --color-racing-red: #E10600;
+  --color-graphite: #1A1A1A;
+  --color-still-gray: #444A52;
+  --color-silver: #BBBEC5;
+  --color-track-blue: #DD66FF;
+  --color-lime: #CCFF00;
+}

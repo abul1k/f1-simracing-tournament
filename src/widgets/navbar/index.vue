@@ -47,7 +47,7 @@ onBeforeUnmount(() => {
     <div class="mx-auto flex h-full max-w-360 items-center justify-between">
       <div class="flex items-center gap-10">
         <router-link to="/" class="flex items-center gap-2">
-          <span class="h-4 w-2.5 bg-[#C13B33]"></span>
+          <span class="h-4 w-2.5 bg-racing-red"></span>
           <span
             class="text-[16px] font-extrabold tracking-[0.5px] whitespace-nowrap text-[#F4F4F2]"
           >
@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
           :aria-label="isMenuOpen ? 'Close menu' : 'Open menu'"
           :aria-expanded="isMenuOpen"
           aria-controls="mobile-menu"
-          class="flex h-8 w-8 items-center justify-center text-[#F4F4F2] transition-colors hover:text-[#C13B33] lg:hidden"
+          class="flex h-8 w-8 items-center justify-center text-[#F4F4F2] transition-colors hover:text-racing-red lg:hidden"
           @click="isMenuOpen = !isMenuOpen"
         >
           <svg
@@ -205,7 +205,7 @@ onBeforeUnmount(() => {
             <li v-for="link in links" :key="link.to">
               <router-link
                 :to="link.to"
-                :active-class="'text-[#F4F4F2] font-bold border-l-[#C13B33]'"
+                :active-class="'text-[#F4F4F2] font-bold border-l-racing-red'"
                 class="block border-l-2 border-l-transparent px-5 py-3.5 text-[15px] font-medium text-[#9C9CA1] transition-colors hover:text-[#F4F4F2]"
                 @click="closeMenu"
               >

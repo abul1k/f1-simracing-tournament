@@ -83,7 +83,7 @@ const basePoints = (row: SessionResultRow) =>
       <RouterLink
         v-if="props.round"
         :to="{ name: 'calendar-schedule', params: { round: props.round } }"
-        class="flex w-fit items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-[#C13B33] transition-opacity hover:opacity-75"
+        class="flex w-fit items-center gap-1.5 text-[12px] font-bold tracking-[0.5px] text-racing-red transition-opacity hover:opacity-75"
       >
         <svg
           class="h-3.5 w-3.5"
@@ -148,7 +148,7 @@ const basePoints = (row: SessionResultRow) =>
 
       <template #cell(time)="{ item }">
         <span v-if="item.time">{{ item.time }}</span>
-        <span v-else class="font-sans text-[12px] font-semibold text-[#C13B33]">
+        <span v-else class="font-sans text-[12px] font-semibold text-racing-red">
           {{ noTimeLabel(item) }}
         </span>
       </template>

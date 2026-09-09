@@ -143,7 +143,7 @@ onUnmounted(() => clearInterval(timer))
 
         <span
           v-else
-          class="font-mono text-[22px] font-semibold text-[#C13B33] sm:text-[28px]"
+          class="font-mono text-[22px] font-semibold text-racing-red sm:text-[28px]"
         >
           {{ countdown }}
         </span>
