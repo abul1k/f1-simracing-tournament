@@ -20,8 +20,8 @@
         "position": 2,
         "gridPosition": 1,
         "status": "finished",
-        "fastestLap": false,
-        "points": 18,
+        "fastestLap": true,
+        "points": 19,
         "racedFor": "TEAM_RP"
       },
       {
