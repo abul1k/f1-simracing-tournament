@@ -20,8 +20,8 @@
         "position": 2,
         "gridPosition": 1,
         "status": "finished",
-        "fastestLap": true,
-        "points": 19,
+        "fastestLap": false,
+        "points": 18,
         "racedFor": "TEAM_RP"
       },
       {
@@ -135,8 +135,8 @@
         "position": 7,
         "gridPosition": 6,
         "status": "finished",
-        "fastestLap": false,
-        "points": 6
+        "fastestLap": true,
+        "points": 7
       },
       {
         "driverId": "DRV006",

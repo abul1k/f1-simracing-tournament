@@ -50,24 +50,24 @@
     },
     {
       "position": 5,
-      "driverId": "DRV025",
-      "points": 19,
-      "wins": 0,
-      "podiums": 1,
-      "results": [
-        "—",
-        2
-      ]
-    },
-    {
-      "position": 6,
       "driverId": "DRV016",
-      "points": 18,
+      "points": 19,
       "wins": 0,
       "podiums": 0,
       "results": [
         4,
         7
+      ]
+    },
+    {
+      "position": 6,
+      "driverId": "DRV025",
+      "points": 18,
+      "wins": 0,
+      "podiums": 1,
+      "results": [
+        "—",
+        2
       ]
     },
     {
@@ -340,7 +340,7 @@
     {
       "position": 5,
       "teamId": "TEAM_RP",
-      "points": 21,
+      "points": 20,
       "wins": 0,
       "podiums": 1,
       "driverIds": [
@@ -352,7 +352,7 @@
     {
       "position": 6,
       "teamId": "TEAM_ALF",
-      "points": 18,
+      "points": 19,
       "wins": 0,
       "podiums": 0,
       "driverIds": [
