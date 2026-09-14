@@ -2,6 +2,7 @@
 import { onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Button from '@/shared/ui/button/index.vue'
+import logoUrl from '@/shared/assets/logo/logonotext.png'
 
 const links = [
   { label: 'Championship', to: '/' },
@@ -46,13 +47,18 @@ onBeforeUnmount(() => {
   >
     <div class="mx-auto flex h-full max-w-360 items-center justify-between">
       <div class="flex items-center gap-10">
-        <router-link to="/" class="flex items-center gap-2">
-          <span class="h-4 w-2.5 bg-racing-red"></span>
-          <span
-            class="text-[16px] font-extrabold tracking-[0.5px] whitespace-nowrap text-[#F4F4F2]"
-          >
-            RACEFOR.FUN
-          </span>
+        <router-link
+          to="/"
+          class="flex items-center"
+          aria-label="F1 Uzbekistan Sim Racing — home"
+        >
+          <img
+            :src="logoUrl"
+            alt="F1 Uzbekistan Sim Racing"
+            width="255"
+            height="44"
+            class="h-7 w-auto"
+          />
         </router-link>
 
         <ul class="hidden items-center gap-7 lg:flex">

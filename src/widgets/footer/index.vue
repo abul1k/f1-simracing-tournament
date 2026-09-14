@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import logoUrl from '@/shared/assets/logo/logonotext.png'
+
 const links = [
   { label: 'Championship', to: '/' },
   { label: 'Calendar', to: '/calendar' },
@@ -22,13 +24,15 @@ const year = new Date().getFullYear()
         class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center md:gap-0"
       >
         <div class="flex flex-col gap-1">
-          <span
-            class="text-[14px] font-extrabold whitespace-nowrap text-[#F4F4F2]"
-          >
-            RACEFOR.FUN
-          </span>
+          <img
+            :src="logoUrl"
+            alt="F1 Uzbekistan Sim Racing"
+            width="162"
+            height="44"
+            class="lg"
+          />
           <span class="text-[12px] font-normal text-[#68686D]">
-            F1 2020 Community Championship
+            F1 Uzbekistan Sim Racing
           </span>
         </div>
 
@@ -47,7 +51,7 @@ const year = new Date().getFullYear()
       <div class="h-px w-full bg-[#2A2A2E]"></div>
       <div class="flex items-center justify-between">
         <p class="text-[11px] font-normal text-[#68686D]">
-          © {{ year }} RACEFOR.FUN. All rights reserved.
+          © {{ year }} F1 Uzbekistan Sim Racing. All rights reserved.
         </p>
         <p class="text-[13px] font-normal text-[#68686D]">
           Made with ❤️ by
