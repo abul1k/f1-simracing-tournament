@@ -1,183 +1,200 @@
 {
   "roundsCompleted": [
     1,
-    2
+    2,
+    3
   ],
   "drivers": [
     {
       "position": 1,
       "driverId": "DRV003",
+      "points": 59,
+      "wins": 1,
+      "podiums": 3,
+      "results": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "position": 2,
+      "driverId": "DRV025",
+      "points": 43,
+      "wins": 1,
+      "podiums": 2,
+      "results": [
+        "—",
+        2,
+        1
+      ]
+    },
+    {
+      "position": 3,
+      "driverId": "DRV005",
       "points": 40,
       "wins": 1,
       "podiums": 2,
       "results": [
+        "DNF",
         1,
         3
       ]
     },
     {
-      "position": 2,
+      "position": 4,
       "driverId": "DRV011",
-      "points": 28,
+      "points": 32,
       "wins": 0,
       "podiums": 1,
       "results": [
         2,
-        5
+        5,
+        8
       ]
     },
     {
-      "position": 3,
+      "position": 5,
+      "driverId": "DRV016",
+      "points": 31,
+      "wins": 0,
+      "podiums": 0,
+      "results": [
+        4,
+        7,
+        4
+      ]
+    },
+    {
+      "position": 6,
       "driverId": "DRV007",
       "points": 28,
       "wins": 0,
       "podiums": 1,
       "results": [
         3,
-        4
-      ]
-    },
-    {
-      "position": 4,
-      "driverId": "DRV005",
-      "points": 25,
-      "wins": 1,
-      "podiums": 1,
-      "results": [
-        "DNF",
-        1
-      ]
-    },
-    {
-      "position": 5,
-      "driverId": "DRV016",
-      "points": 19,
-      "wins": 0,
-      "podiums": 0,
-      "results": [
         4,
-        7
-      ]
-    },
-    {
-      "position": 6,
-      "driverId": "DRV025",
-      "points": 18,
-      "wins": 0,
-      "podiums": 1,
-      "results": [
-        "—",
-        2
+        "DNS"
       ]
     },
     {
       "position": 7,
+      "driverId": "DRV026",
+      "points": 18,
+      "wins": 0,
+      "podiums": 0,
+      "results": [
+        "—",
+        6,
+        5
+      ]
+    },
+    {
+      "position": 8,
+      "driverId": "DRV017",
+      "points": 12,
+      "wins": 0,
+      "podiums": 0,
+      "results": [
+        8,
+        15,
+        6
+      ]
+    },
+    {
+      "position": 9,
       "driverId": "DRV013",
       "points": 10,
       "wins": 0,
       "podiums": 0,
       "results": [
         5,
-        19
+        19,
+        "DNS"
       ]
     },
     {
-      "position": 8,
+      "position": 10,
       "driverId": "DRV021",
       "points": 9,
       "wins": 0,
       "podiums": 0,
       "results": [
         6,
-        10
-      ]
-    },
-    {
-      "position": 9,
-      "driverId": "DRV026",
-      "points": 8,
-      "wins": 0,
-      "podiums": 0,
-      "results": [
-        "—",
-        6
-      ]
-    },
-    {
-      "position": 10,
-      "driverId": "DRV019",
-      "points": 6,
-      "wins": 0,
-      "podiums": 0,
-      "results": [
-        7,
-        12
+        10,
+        "—"
       ]
     },
     {
       "position": 11,
-      "driverId": "DRV017",
-      "points": 4,
+      "driverId": "DRV019",
+      "points": 8,
       "wins": 0,
       "podiums": 0,
       "results": [
-        8,
-        15
+        7,
+        12,
+        9
       ]
     },
     {
       "position": 12,
+      "driverId": "DRV009",
+      "points": 8,
+      "wins": 0,
+      "podiums": 0,
+      "results": [
+        "DNF",
+        9,
+        7
+      ]
+    },
+    {
+      "position": 13,
       "driverId": "DRV012",
       "points": 4,
       "wins": 0,
       "podiums": 0,
       "results": [
         "DNS",
-        8
+        8,
+        "DNS"
       ]
     },
     {
-      "position": 13,
+      "position": 14,
       "driverId": "DRV006",
       "points": 2,
       "wins": 0,
       "podiums": 0,
       "results": [
         9,
-        17
-      ]
-    },
-    {
-      "position": 14,
-      "driverId": "DRV009",
-      "points": 2,
-      "wins": 0,
-      "podiums": 0,
-      "results": [
-        "DNF",
-        9
+        17,
+        "DNS"
       ]
     },
     {
       "position": 15,
+      "driverId": "DRV020",
+      "points": 1,
+      "wins": 0,
+      "podiums": 0,
+      "results": [
+        11,
+        14,
+        10
+      ]
+    },
+    {
+      "position": 16,
       "driverId": "DRV002",
       "points": 1,
       "wins": 0,
       "podiums": 0,
       "results": [
         10,
+        "DNS",
         "DNS"
-      ]
-    },
-    {
-      "position": 16,
-      "driverId": "DRV020",
-      "points": 0,
-      "wins": 0,
-      "podiums": 0,
-      "results": [
-        11,
-        14
       ]
     },
     {
@@ -188,7 +205,8 @@
       "podiums": 0,
       "results": [
         "DNF",
-        11
+        11,
+        "DNS"
       ]
     },
     {
@@ -199,7 +217,8 @@
       "podiums": 0,
       "results": [
         12,
-        "DNS"
+        "DNS",
+        "DNF"
       ]
     },
     {
@@ -210,7 +229,8 @@
       "podiums": 0,
       "results": [
         13,
-        16
+        16,
+        "DNS"
       ]
     },
     {
@@ -221,7 +241,8 @@
       "podiums": 0,
       "results": [
         "DNS",
-        13
+        13,
+        "DNF"
       ]
     },
     {
@@ -232,7 +253,8 @@
       "podiums": 0,
       "results": [
         "DNF",
-        18
+        18,
+        "—"
       ]
     },
     {
@@ -242,6 +264,7 @@
       "wins": 0,
       "podiums": 0,
       "results": [
+        "DNS",
         "DNS",
         "DNS"
       ]
@@ -254,7 +277,8 @@
       "podiums": 0,
       "results": [
         "DNF",
-        "DNS"
+        "DNS",
+        "DNF"
       ]
     },
     {
@@ -265,6 +289,7 @@
       "podiums": 0,
       "results": [
         "DNF",
+        "DNS",
         "DNS"
       ]
     },
@@ -275,6 +300,7 @@
       "wins": 0,
       "podiums": 0,
       "results": [
+        "—",
         "—",
         "—"
       ]
@@ -287,7 +313,20 @@
       "podiums": 0,
       "results": [
         "—",
+        "—",
         "—"
+      ]
+    },
+    {
+      "position": 27,
+      "driverId": "DRV027",
+      "points": 0,
+      "wins": 0,
+      "podiums": 0,
+      "results": [
+        "—",
+        "—",
+        "DNF"
       ]
     }
   ],
@@ -295,9 +334,9 @@
     {
       "position": 1,
       "teamId": "TEAM_RBR",
-      "points": 40,
+      "points": 59,
       "wins": 1,
-      "podiums": 2,
+      "podiums": 3,
       "driverIds": [
         "DRV003",
         "DRV004"
@@ -306,53 +345,43 @@
     {
       "position": 2,
       "teamId": "TEAM_REN",
-      "points": 40,
+      "points": 54,
       "wins": 0,
       "podiums": 1,
       "driverIds": [
         "DRV011",
         "DRV012",
-        "DRV021"
+        "DRV021",
+        "DRV026"
       ]
     },
     {
       "position": 3,
-      "teamId": "TEAM_MCL",
-      "points": 28,
-      "wins": 0,
-      "podiums": 1,
-      "driverIds": [
-        "DRV007",
-        "DRV008"
-      ]
-    },
-    {
-      "position": 4,
       "teamId": "TEAM_FER",
-      "points": 27,
+      "points": 42,
       "wins": 1,
-      "podiums": 1,
+      "podiums": 2,
       "driverIds": [
         "DRV005",
         "DRV006"
       ]
     },
     {
-      "position": 5,
-      "teamId": "TEAM_RP",
-      "points": 20,
-      "wins": 0,
+      "position": 4,
+      "teamId": "TEAM_WIL",
+      "points": 33,
+      "wins": 1,
       "podiums": 1,
       "driverIds": [
-        "DRV009",
-        "DRV010",
+        "DRV019",
+        "DRV020",
         "DRV025"
       ]
     },
     {
-      "position": 6,
+      "position": 5,
       "teamId": "TEAM_ALF",
-      "points": 19,
+      "points": 31,
       "wins": 0,
       "podiums": 0,
       "driverIds": [
@@ -362,7 +391,42 @@
       ]
     },
     {
+      "position": 6,
+      "teamId": "TEAM_MCL",
+      "points": 29,
+      "wins": 0,
+      "podiums": 1,
+      "driverIds": [
+        "DRV007",
+        "DRV008",
+        "DRV020"
+      ]
+    },
+    {
       "position": 7,
+      "teamId": "TEAM_RP",
+      "points": 26,
+      "wins": 0,
+      "podiums": 1,
+      "driverIds": [
+        "DRV009",
+        "DRV010",
+        "DRV025"
+      ]
+    },
+    {
+      "position": 8,
+      "teamId": "TEAM_HAS",
+      "points": 12,
+      "wins": 0,
+      "podiums": 0,
+      "driverIds": [
+        "DRV017",
+        "DRV018"
+      ]
+    },
+    {
+      "position": 9,
       "teamId": "TEAM_AT",
       "points": 10,
       "wins": 0,
@@ -370,11 +434,12 @@
       "driverIds": [
         "DRV013",
         "DRV014",
-        "DRV023"
+        "DRV023",
+        "DRV027"
       ]
     },
     {
-      "position": 8,
+      "position": 10,
       "teamId": "TEAM_MER",
       "points": 10,
       "wins": 0,
@@ -384,28 +449,6 @@
         "DRV002",
         "DRV021",
         "DRV026"
-      ]
-    },
-    {
-      "position": 9,
-      "teamId": "TEAM_WIL",
-      "points": 6,
-      "wins": 0,
-      "podiums": 0,
-      "driverIds": [
-        "DRV019",
-        "DRV020"
-      ]
-    },
-    {
-      "position": 10,
-      "teamId": "TEAM_HAS",
-      "points": 4,
-      "wins": 0,
-      "podiums": 0,
-      "driverIds": [
-        "DRV017",
-        "DRV018"
       ]
     }
   ]
