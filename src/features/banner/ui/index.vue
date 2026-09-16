@@ -7,7 +7,7 @@ import { useBanner } from '../model'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
-const { modules } = useBanner()
+const { modules, bannercontent } = useBanner()
 
 const swiper = ref<SwiperInstance>()
 
@@ -26,17 +26,26 @@ const onSwiper = (instance: SwiperInstance) => {
         clickable: true,
       }"
       :modules="modules"
-      class="banner w-full"
+      class="banner md:h-121.5 w-full"
       @swiper="onSwiper"
     >
-      <SwiperSlide
-        v-for="banner in 3"
-        :key="banner"
-        class="bg-graphite flex! min-h-121.5 items-center justify-center"
-      >
-        <h1 class="text-still-gray text-2xl font-bold text-center">
-          BANNER CONTENT
-        </h1>
+      <SwiperSlide v-for="banner in bannercontent">
+        <a
+          :href="banner.link"
+          target="_blank"
+          class="bg-graphite relative flex! h-full items-center justify-center overflow-hidden"
+        >
+          <img
+            class="absolute inset-0 h-full w-full scale-110 object-cover object-center blur-2xl brightness-50"
+            :src="banner.previewImage"
+            alt=""
+            aria-hidden="true"
+          />
+          <img
+            class="relative z-10 h-full w-auto max-w-full object-contain"
+            :src="banner.previewImage"
+          />
+        </a>
       </SwiperSlide>
     </Swiper>
 

@@ -7,7 +7,7 @@ import StandingsUI from '@/features/championship/standings/ui/index.vue'
 
 <template>
   <div class="flex flex-col gap-9 bg-[#0A0A0B] pt-10 pb-16">
-    <BannerUI v-if="false" />
+    <BannerUI v-if="true" />
     <SeasonInfoUI />
     <UpcomingRaceUI />
     <StandingsUI />
