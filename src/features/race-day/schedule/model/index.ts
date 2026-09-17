@@ -1,6 +1,9 @@
 import type { CalendarRound } from '@/entities/round/model'
 
-export type RaceRound = Pick<CalendarRound, 'round' | 'country' | 'type' | 'date'>
+export type RaceRound = Pick<
+  CalendarRound,
+  'round' | 'country' | 'type' | 'date' | 'raceHighlights'
+>
 
 export interface RaceSession {
   key: string
@@ -17,7 +20,12 @@ const featureSessions: RaceSession[] = [
 
 const sprintSessions: RaceSession[] = [
   { key: 'practice-1', name: 'PRACTICE 1', start: '18:00', end: '18:30' },
-  { key: 'sprint-qualifying', name: 'SPRINT QUALIFYING', start: '18:30', end: '18:50' },
+  {
+    key: 'sprint-qualifying',
+    name: 'SPRINT QUALIFYING',
+    start: '18:30',
+    end: '18:50',
+  },
   { key: 'sprint', name: 'SPRINT', start: '19:00', end: '19:20' },
   { key: 'qualifying', name: 'QUALIFYING', start: '19:30', end: '19:50' },
   { key: 'race', name: 'RACE', start: '20:00' },
@@ -44,8 +52,10 @@ export const firstQualifying = (round?: RaceRound): RaceSession | undefined =>
  * Combines a round's date with a session's start time into a local datetime.
  * @returns An ISO-like local string such as `2026-09-07T22:00:00`.
  */
-export const sessionStartsAt = (round: RaceRound, session: RaceSession): string =>
-  `${round.date}T${session.start}:00`
+export const sessionStartsAt = (
+  round: RaceRound,
+  session: RaceSession,
+): string => `${round.date}T${session.start}:00`
 
 export const raceTitle = (round?: RaceRound) => {
   if (!round) return ''
@@ -56,8 +66,18 @@ export const raceTitle = (round?: RaceRound) => {
 }
 
 const months = [
-  'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
 ]
 
 export const dayOf = (date: string) => date.slice(8, 10)

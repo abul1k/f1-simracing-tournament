@@ -12,6 +12,8 @@ const props = withDefaults(
     full?: boolean
     disabled?: boolean
     to?: RouteLocationRaw
+    /** External URL — renders a link that opens in a new tab. */
+    href?: string
     type?: 'button' | 'submit' | 'reset'
   }>(),
   {
@@ -50,7 +52,18 @@ const classes = computed(() => [
 </script>
 
 <template>
+  <a
+    v-if="props.href"
+    :href="props.href"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="cursor-pointer flex items-center justify-center text-[12px] font-bold tracking-[0.5px] whitespace-nowrap transition-colors"
+    :class="classes"
+  >
+    <slot />
+  </a>
   <component
+    v-else
     :is="props.to ? RouterLink : 'button'"
     :to="props.to"
     :type="props.to ? undefined : props.type"

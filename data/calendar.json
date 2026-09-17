@@ -4,21 +4,24 @@
     "flag": "au",
     "country": "AUSTRALIA",
     "type": "FEATURE RACE",
-    "date": "2026-09-07"
+    "date": "2026-09-07",
+    "raceHighlights": "https://www.youtube.com/live/fxbA1RjEd3M?si=D9gws2Rrk-tksqaC&t=3355"
   },
   {
     "round": 2,
     "flag": "bh",
     "country": "BAHRAIN",
     "type": "FEATURE RACE",
-    "date": "2026-09-10"
+    "date": "2026-09-10",
+    "raceHighlights": "https://www.youtube.com/live/vsqPCNYcJ50?si=PusLYrQ8U5MxOrli&t=2517"
   },
   {
     "round": 3,
     "flag": "cn",
     "country": "CHINA",
     "type": "FEATURE RACE",
-    "date": "2026-09-14"
+    "date": "2026-09-14",
+    "raceHighlights": "https://www.youtube.com/live/z60KbxZgcBs?si=ZflDbQoTxOBM8Csz&t=2598"
   },
   {
     "round": 4,

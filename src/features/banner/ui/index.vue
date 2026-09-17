@@ -33,7 +33,8 @@ const onSwiper = (instance: SwiperInstance) => {
         <a
           :href="banner.link"
           target="_blank"
-          class="bg-graphite relative flex! h-full items-center justify-center overflow-hidden"
+          rel="noopener noreferrer"
+          class="group bg-graphite relative flex! h-full items-center justify-center overflow-hidden"
         >
           <img
             class="absolute inset-0 h-full w-full scale-110 object-cover object-center blur-2xl brightness-50"
@@ -45,6 +46,15 @@ const onSwiper = (instance: SwiperInstance) => {
             class="relative z-10 h-full w-auto max-w-full object-contain"
             :src="banner.previewImage"
           />
+
+          <span
+            class="absolute z-20 flex h-12 w-17 items-center justify-center rounded-lg bg-black/60 transition-colors group-hover:bg-racing-red"
+            aria-hidden="true"
+          >
+            <svg class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+            </svg>
+          </span>
         </a>
       </SwiperSlide>
     </Swiper>

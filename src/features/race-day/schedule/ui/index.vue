@@ -22,8 +22,9 @@ const props = defineProps<{
 
 const fields: TableField[] = [
   { key: 'date', width: '70px' },
-  { key: 'name' },
-  { key: 'results', width: '120px', align: 'right' },
+  { key: 'name', width: '160px' },
+  { key: 'raceHighlights' },
+  { key: 'results' },
 ]
 
 const sessions = computed(() => getSessions(props.round))
@@ -68,9 +69,13 @@ const sessions = computed(() => getSessions(props.round))
       </div>
 
       <div class="flex flex-wrap items-center gap-2.5 text-[13px]">
-        <span class="font-mono text-[#9C9CA1]">{{ longDate(props.round.date) }}</span>
+        <span class="font-mono text-[#9C9CA1]">{{
+          longDate(props.round.date)
+        }}</span>
         <span class="text-[#68686D]">·</span>
-        <span class="text-[#9C9CA1]">{{ getCircuit(props.round.country) }}</span>
+        <span class="text-[#9C9CA1]">{{
+          getCircuit(props.round.country)
+        }}</span>
       </div>
     </div>
 
@@ -90,7 +95,9 @@ const sessions = computed(() => getSessions(props.round))
             <span class="font-mono text-[15px] font-bold text-[#F4F4F2]">
               {{ dayOf(props.round!.date) }}
             </span>
-            <span class="pt-1 text-[11px] font-bold tracking-[0.6px] text-[#68686D]">
+            <span
+              class="pt-1 text-[11px] font-bold tracking-[0.6px] text-[#68686D]"
+            >
               {{ monthOf(props.round!.date) }}
             </span>
           </div>
@@ -98,10 +105,27 @@ const sessions = computed(() => getSessions(props.round))
 
         <template #cell(name)="{ item }">
           <div class="flex flex-col gap-1">
-            <span class="text-[14px] font-bold text-[#F4F4F2]">{{ item.name }}</span>
+            <span class="text-[14px] font-bold text-[#F4F4F2]">{{
+              item.name
+            }}</span>
             <span class="font-mono text-[12px] text-[#9C9CA1]">
               {{ sessionTime(item) }}
             </span>
+          </div>
+        </template>
+
+        <template #cell(raceHighlights)="{ item }">
+          <div
+            v-if="item.key === 'race' && props.round!.raceHighlights"
+            class="flex justify-end"
+          >
+            <Button
+              variant="outlined"
+              size="sm"
+              :href="props.round!.raceHighlights"
+            >
+              WATCH FULL RACE
+            </Button>
           </div>
         </template>
 

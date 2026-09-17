@@ -18,6 +18,7 @@ export interface CalendarRound {
   country: string
   type: RaceType
   date: string
+  raceHighlights?: string
 }
 
 export interface QualifyingResult {
@@ -77,7 +78,9 @@ export interface Round {
 /** A finishing position, or a retirement marker, or `—` for a round not yet run. */
 export type RoundOutcome = number | 'DNF' | 'DSQ' | 'DNS' | '—'
 
-export const isRetired = (value: RoundOutcome): value is 'DNF' | 'DSQ' | 'DNS' =>
+export const isRetired = (
+  value: RoundOutcome,
+): value is 'DNF' | 'DSQ' | 'DNS' =>
   value === 'DNF' || value === 'DSQ' || value === 'DNS'
 
 /** A classified finisher — guaranteed to carry a finishing position. */
@@ -88,8 +91,9 @@ export const isClassified = (result: RaceResult): result is ClassifiedResult =>
   result.status === 'finished' && result.position !== null
 
 /** Narrows a result to a top-three finish. */
-export const isPodiumFinish = (result: RaceResult): result is ClassifiedResult =>
-  isClassified(result) && result.position <= 3
+export const isPodiumFinish = (
+  result: RaceResult,
+): result is ClassifiedResult => isClassified(result) && result.position <= 3
 
 /** Maps a race result to the marker shown in a results grid. */
 export const outcomeOf = (result: RaceResult): RoundOutcome => {
