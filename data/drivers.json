@@ -3,7 +3,7 @@
     "id": "DRV001",
     "name": "Saidkamol Inomov",
     "number": 1,
-    "teamId": "TEAM_MER",
+    "teamId": null,
     "country": "UZ"
   },
   {
@@ -181,7 +181,7 @@
     "id": "DRV025",
     "name": "MuhammadAmin Cremine",
     "number": 27,
-    "teamId": null,
+    "teamId": "TEAM_MER",
     "country": "UZ"
   },
   {
