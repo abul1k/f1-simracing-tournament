@@ -10,6 +10,7 @@ import {
   dayOf,
   getSessions,
   longDate,
+  mainRace,
   monthOf,
   raceTitle,
   sessionTime,
@@ -28,6 +29,10 @@ const fields: TableField[] = [
 ]
 
 const sessions = computed(() => getSessions(props.round))
+
+// The sprint is the main race of a sprint weekend, so that is the row the
+// highlights link belongs on there.
+const raceKey = computed(() => mainRace(props.round)?.key)
 </script>
 
 <template>
@@ -116,7 +121,7 @@ const sessions = computed(() => getSessions(props.round))
 
         <template #cell(raceHighlights)="{ item }">
           <div
-            v-if="item.key === 'race' && props.round!.raceHighlights"
+            v-if="item.key === raceKey && props.round!.raceHighlights"
             class="flex justify-end"
           >
             <Button

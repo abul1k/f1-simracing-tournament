@@ -35,21 +35,24 @@
     "flag": "jp",
     "country": "JAPAN",
     "type": "FEATURE RACE",
-    "date": "2026-09-21"
+    "date": "2026-09-21",
+    "raceHighlights": "https://www.youtube.com/live/MVMpKxjUrnw?si=702G7ubGGmUd868f&t=2210"
   },
   {
     "round": 6,
     "flag": "at",
     "country": "AUSTRIA",
     "type": "SPRINT RACE",
-    "date": "2026-09-24"
+    "date": "2026-09-24",
+    "raceHighlights": "https://www.youtube.com/live/jCgoVInINZg?si=UF8Ax2oNm6M-KTyD&t=1723"
   },
   {
     "round": 7,
     "flag": "gb",
     "country": "GREAT BRITAIN",
     "type": "SPRINT RACE",
-    "date": "2026-09-24"
+    "date": "2026-09-24",
+    "raceHighlights": "https://www.youtube.com/live/jCgoVInINZg?si=6wSnUu5H2ZrF-mvP&t=5226"
   },
   {
     "round": 8,

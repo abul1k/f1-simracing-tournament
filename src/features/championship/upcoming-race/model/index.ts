@@ -9,8 +9,8 @@ import { getCircuit } from '@/shared/config/circuits'
 import type { CalendarEvent } from '@/shared/utils/calendarEvent'
 import {
   firstQualifying,
-  getSession,
   getSessions,
+  mainRace,
   longDate,
   sessionStartsAt,
   sessionTime,
@@ -97,6 +97,7 @@ export const useNextRace = (): ComputedRef<NextRace | undefined> => {
     }
 
     const quali = firstQualifying(round)
+    const race = mainRace(round)
     const startsAt = quali ? sessionStartsAt(round, quali) : undefined
 
     return {
@@ -108,7 +109,7 @@ export const useNextRace = (): ComputedRef<NextRace | undefined> => {
       circuit: getCircuit(next.country) ?? '',
       sessions: getSessions(round)
         .filter(
-          (session) => session.key === quali?.key || session.key === 'race',
+          (session) => session.key === quali?.key || session.key === race?.key,
         )
         .map((session) => ({
           label: session.name,
@@ -191,7 +192,7 @@ export const useNextRaceEvent = (): ComputedRef<CalendarEvent | undefined> => {
       date: next.date,
     }
 
-    const race = getSession(round, 'race')
+    const race = mainRace(round)
 
     if (!race) return undefined
 

@@ -42,6 +42,13 @@ export const championshipSchema: Spec = {
       keyPattern: /^\d+$/,
       of: { kind: 'number', integer: true, min: 0 },
     },
+    // Sprints run a shorter table of their own — see `sprintScoring` in
+    // `data/championship.json`. A position missing from it scores nothing.
+    sprintScoring: {
+      kind: 'record',
+      keyPattern: /^\d+$/,
+      of: { kind: 'number', integer: true, min: 0 },
+    },
     bonusPoints: {
       kind: 'object',
       fields: {
@@ -90,12 +97,15 @@ export const calendarSchema: Spec = {
   minItems: 1,
   of: {
     kind: 'object',
+    // Set once a round has been run and the stream is up; absent until then.
+    optional: ['raceHighlights'],
     fields: {
       round: { kind: 'number', integer: true, min: 1 },
       flag: { kind: 'string', minLength: 2 },
       country: { kind: 'string', minLength: 1 },
       type: { kind: 'string', enum: RACE_TYPES },
       date: { kind: 'string', pattern: DATE_PATTERN },
+      raceHighlights: { kind: 'string', minLength: 1 },
     },
   },
 }

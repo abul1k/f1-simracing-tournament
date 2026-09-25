@@ -197,5 +197,26 @@
     "number": 29,
     "teamId": null,
     "country": "UZ"
+  },
+  {
+    "id": "DRV028",
+    "name": "Ziyodulla",
+    "number": 30,
+    "teamId": null,
+    "country": "UZ"
+  },
+  {
+    "id": "DRV029",
+    "name": "Abdulaziz Abduxalilov",
+    "number": 31,
+    "teamId": null,
+    "country": "UZ"
+  },
+  {
+    "id": "DRV030",
+    "name": "Abdullox Oyxojayev",
+    "number": 32,
+    "teamId": null,
+    "country": "UZ"
   }
 ]

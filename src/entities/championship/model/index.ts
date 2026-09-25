@@ -20,6 +20,8 @@ export interface Championship {
   region: string
   status: ChampionshipStatus
   scoring: ScoringTable
+  /** The shorter table a sprint scores on, in place of `scoring`. */
+  sprintScoring: ScoringTable
   bonusPoints: BonusPoints
   driverCount: number
   roundsTotal: number

@@ -18,6 +18,10 @@ const featureSessions: RaceSession[] = [
   { key: 'race', name: 'RACE', start: '22:30' },
 ]
 
+/**
+ * A sprint weekend is the sprint and nothing after it — there is no separate
+ * qualifying or feature race, so the sprint itself is the weekend's main race.
+ */
 const sprintSessions: RaceSession[] = [
   { key: 'practice-1', name: 'PRACTICE 1', start: '18:00', end: '18:30' },
   {
@@ -27,8 +31,6 @@ const sprintSessions: RaceSession[] = [
     end: '18:50',
   },
   { key: 'sprint', name: 'SPRINT', start: '19:00', end: '19:20' },
-  { key: 'qualifying', name: 'QUALIFYING', start: '19:30', end: '19:50' },
-  { key: 'race', name: 'RACE', start: '20:00' },
 ]
 
 export const getSessions = (round?: RaceRound) => {
@@ -47,6 +49,15 @@ export const getSession = (round: RaceRound | undefined, key?: string) =>
  */
 export const firstQualifying = (round?: RaceRound): RaceSession | undefined =>
   getSessions(round).find((session) => session.key.includes('qualifying'))
+
+/**
+ * The race that closes out the weekend — the sprint on a sprint weekend, the
+ * feature race otherwise. Anything that means "the main event" (the countdown,
+ * the calendar export, the highlights link) reads this rather than the `race`
+ * key, which a sprint weekend does not have.
+ */
+export const mainRace = (round?: RaceRound): RaceSession | undefined =>
+  getSessions(round).at(-1)
 
 /**
  * Combines a round's date with a session's start time into a local datetime.

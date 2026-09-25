@@ -97,6 +97,10 @@ export const useSessionResults = (
     }
 
     if (RACE_KEYS.includes(key)) {
+      // Which table the round scored on, and whether a bonus was on offer at
+      // all, both follow the race type — a sprint pays for position only.
+      const type = rounds.getCalendarRound(number)?.type ?? 'FEATURE RACE'
+
       return rounds.getRaceResults(number).map((result) => {
         // Mirrors scripts/calculatePoints.ts: the bonus only lands for a
         // classified finisher inside the eligible positions.
@@ -104,7 +108,7 @@ export const useSessionResults = (
           result.status === 'finished' &&
           result.fastestLap &&
           result.position !== null &&
-          championship.isFastestLapEligible(result.position)
+          championship.isFastestLapEligible(result.position, type)
 
         return {
           pos: result.position ?? statusLabel(result.status),
