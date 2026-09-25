@@ -4,13 +4,20 @@ import { useRoute } from 'vue-router'
 import Button from '@/shared/ui/button/index.vue'
 import logoUrl from '@/shared/assets/logo/logonotext.png'
 
-const links = [
+interface NavLink {
+  label: string
+  to: string
+  /** Shows a `NEW` badge next to the link to draw attention to it. */
+  isNew?: boolean
+}
+
+const links: NavLink[] = [
   { label: 'Championship', to: '/' },
   { label: 'Calendar', to: '/calendar' },
   { label: 'Standings', to: '/standings' },
   { label: 'Drivers', to: '/drivers' },
   { label: 'Teams', to: '/teams' },
-  { label: 'Results', to: '/results' },
+  { label: 'Reaction Time Test', to: '/reaction-time-test', isNew: true },
   { label: 'Statistics', to: '/statistics' },
   { label: 'Regulations', to: '/regulations' },
 ]
@@ -66,9 +73,20 @@ onBeforeUnmount(() => {
             <router-link
               :to="link.to"
               :active-class="'text-[#F4F4F2] font-bold'"
-              class="text-[14px] font-medium whitespace-nowrap text-[#9C9CA1] transition-colors hover:text-[#F4F4F2]"
+              class="flex items-center gap-1.5 text-[14px] font-medium whitespace-nowrap text-[#9C9CA1] transition-colors hover:text-[#F4F4F2]"
             >
               {{ link.label }}
+              <span v-if="link.isNew" class="relative flex">
+                <span
+                  class="absolute inset-0 animate-ping rounded-xs bg-racing-red opacity-40"
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class="relative rounded-xs bg-racing-red px-1.5 py-0.5 text-[9px] leading-none font-extrabold tracking-[0.8px] text-white"
+                >
+                  NEW
+                </span>
+              </span>
             </router-link>
           </li>
         </ul>
@@ -212,10 +230,21 @@ onBeforeUnmount(() => {
               <router-link
                 :to="link.to"
                 :active-class="'text-[#F4F4F2] font-bold border-l-racing-red'"
-                class="block border-l-2 border-l-transparent px-5 py-3.5 text-[15px] font-medium text-[#9C9CA1] transition-colors hover:text-[#F4F4F2]"
+                class="flex items-center gap-2 border-l-2 border-l-transparent px-5 py-3.5 text-[15px] font-medium text-[#9C9CA1] transition-colors hover:text-[#F4F4F2]"
                 @click="closeMenu"
               >
                 {{ link.label }}
+                <span v-if="link.isNew" class="relative flex">
+                  <span
+                    class="absolute inset-0 animate-ping rounded-xs bg-racing-red opacity-40"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    class="relative rounded-xs bg-racing-red px-1.5 py-0.5 text-[9px] leading-none font-extrabold tracking-[0.8px] text-white"
+                  >
+                    NEW
+                  </span>
+                </span>
               </router-link>
             </li>
           </ul>

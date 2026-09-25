@@ -40,12 +40,12 @@ export default [
     component: () => import('@/pages/public/teams/index.vue'),
   },
   {
-    path: '/results',
-    name: 'results',
+    path: '/reaction-time-test',
+    name: 'reaction-time-test',
     meta: {
       layout: 'main',
     },
-    component: () => import('@/pages/public/results/index.vue'),
+    component: () => import('@/pages/public/reaction-test/index.vue'),
   },
   {
     path: '/statistics',
