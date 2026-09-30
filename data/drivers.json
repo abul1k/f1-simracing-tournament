@@ -13,7 +13,6 @@
     "teamId": "TEAM_MER",
     "country": "UZ"
   },
-
   {
     "id": "DRV003",
     "name": "Muhammad Amin",
@@ -28,7 +27,6 @@
     "teamId": "TEAM_RBR",
     "country": "UZ"
   },
-
   {
     "id": "DRV005",
     "name": "Maksim Yusupov",
@@ -43,7 +41,6 @@
     "teamId": "TEAM_FER",
     "country": "UZ"
   },
-
   {
     "id": "DRV007",
     "name": "Sarvar Temirov",
@@ -58,7 +55,6 @@
     "teamId": "TEAM_MCL",
     "country": "UZ"
   },
-
   {
     "id": "DRV009",
     "name": "Sodiq Xolmatov",
@@ -73,7 +69,6 @@
     "teamId": "TEAM_RP",
     "country": "UZ"
   },
-
   {
     "id": "DRV011",
     "name": "Abdulaziz Izzatullayev",
@@ -88,7 +83,6 @@
     "teamId": "TEAM_REN",
     "country": "UZ"
   },
-
   {
     "id": "DRV013",
     "name": "Sharifov Feruzbek",
@@ -103,7 +97,6 @@
     "teamId": "TEAM_AT",
     "country": "UZ"
   },
-
   {
     "id": "DRV015",
     "name": "Mehroj Sobirov",
@@ -118,7 +111,6 @@
     "teamId": "TEAM_ALF",
     "country": "UZ"
   },
-
   {
     "id": "DRV017",
     "name": "Xamidxonov Boburxon",
@@ -133,7 +125,6 @@
     "teamId": "TEAM_HAS",
     "country": "UZ"
   },
-
   {
     "id": "DRV019",
     "name": "Arabjon Ibroximov",
@@ -148,7 +139,6 @@
     "teamId": "TEAM_WIL",
     "country": "UZ"
   },
-
   {
     "id": "DRV021",
     "name": "Sherozbek Baratov",
@@ -193,7 +183,7 @@
   },
   {
     "id": "DRV027",
-    "name": "Allez Amanai",
+    "name": "Jahongir Yuldashev",
     "number": 29,
     "teamId": null,
     "country": "UZ"
@@ -216,6 +206,13 @@
     "id": "DRV030",
     "name": "Abdullox Oyxojayev",
     "number": 32,
+    "teamId": null,
+    "country": "UZ"
+  },
+  {
+    "id": "DRV031",
+    "name": "Muhammad Raxim",
+    "number": 33,
     "teamId": null,
     "country": "UZ"
   }
