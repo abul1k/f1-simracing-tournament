@@ -9,19 +9,19 @@
     "results": [
       {
         "driverId": "DRV025",
-        "position": 1,
-        "gridPosition": null,
-        "status": "finished",
-        "fastestLap": false,
-        "points": 25
-      },
-      {
-        "driverId": "DRV005",
         "position": 2,
         "gridPosition": null,
         "status": "finished",
+        "fastestLap": false,
+        "points": 18
+      },
+      {
+        "driverId": "DRV005",
+        "position": 1,
+        "gridPosition": null,
+        "status": "finished",
         "fastestLap": true,
-        "points": 19
+        "points": 26
       },
       {
         "driverId": "DRV003",
