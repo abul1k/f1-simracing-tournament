@@ -13,7 +13,7 @@
         "gridPosition": null,
         "status": "finished",
         "fastestLap": true,
-        "points": 8
+        "points": 26
       },
       {
         "driverId": "DRV003",
@@ -21,7 +21,7 @@
         "gridPosition": null,
         "status": "finished",
         "fastestLap": false,
-        "points": 7
+        "points": 18
       },
       {
         "driverId": "DRV005",
@@ -29,7 +29,7 @@
         "gridPosition": null,
         "status": "finished",
         "fastestLap": false,
-        "points": 6
+        "points": 15
       },
       {
         "driverId": "DRV011",
@@ -37,7 +37,7 @@
         "gridPosition": null,
         "status": "finished",
         "fastestLap": false,
-        "points": 5
+        "points": 12
       },
       {
         "driverId": "DRV010",
@@ -45,7 +45,7 @@
         "gridPosition": null,
         "status": "finished",
         "fastestLap": false,
-        "points": 4
+        "points": 10
       },
       {
         "driverId": "DRV028",
@@ -54,7 +54,7 @@
         "status": "finished",
         "fastestLap": false,
         "racedFor": "TEAM_AT",
-        "points": 3
+        "points": 8
       },
       {
         "driverId": "DRV016",
@@ -62,7 +62,7 @@
         "gridPosition": null,
         "status": "finished",
         "fastestLap": false,
-        "points": 2
+        "points": 6
       },
       {
         "driverId": "DRV004",
@@ -70,7 +70,7 @@
         "gridPosition": null,
         "status": "finished",
         "fastestLap": false,
-        "points": 1
+        "points": 4
       },
       {
         "driverId": "DRV026",
@@ -79,7 +79,7 @@
         "status": "finished",
         "fastestLap": false,
         "racedFor": "TEAM_MCL",
-        "points": 0
+        "points": 2
       },
       {
         "driverId": "DRV027",
@@ -88,7 +88,7 @@
         "status": "finished",
         "fastestLap": false,
         "racedFor": "TEAM_WIL",
-        "points": 0
+        "points": 1
       },
       {
         "driverId": "DRV023",
