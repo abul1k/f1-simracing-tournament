@@ -115,6 +115,14 @@
         "status": "finished",
         "fastestLap": false,
         "points": 0
+      },
+      {
+        "driverId": "DRV025",
+        "position": 15,
+        "gridPosition": 13,
+        "status": "dnf",
+        "fastestLap": false,
+        "points": 0
       }
     ]
   }
