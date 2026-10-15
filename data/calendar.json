@@ -59,21 +59,24 @@
     "flag": "hu",
     "country": "HUNGARY",
     "type": "FEATURE RACE",
-    "date": "2026-09-28"
+    "date": "2026-09-28",
+    "raceHighlights": "https://www.youtube.com/live/8Uob9ey0xHU?si=ZcJnwCYb6tmdvDPv&t=2390"
   },
   {
     "round": 9,
     "flag": "be",
     "country": "BELGIUM",
     "type": "FEATURE RACE",
-    "date": "2026-10-01"
+    "date": "2026-10-01",
+    "raceHighlights": "https://www.youtube.com/live/ecaDwP2DpMA?si=t4Uj7hvMBGLvXzyO&t=1911"
   },
   {
     "round": 10,
     "flag": "it",
     "country": "ITALY",
     "type": "FEATURE RACE",
-    "date": "2026-10-05"
+    "date": "2026-10-05",
+    "raceHighlights": "https://www.youtube.com/live/xT58oholMWg?si=qO09soDRRcF8kirG&t=2029"
   },
   {
     "round": 11,
@@ -87,7 +90,8 @@
     "flag": "ru",
     "country": "RUSSIA",
     "type": "FEATURE RACE",
-    "date": "2026-10-08"
+    "date": "2026-10-08",
+    "raceHighlights": "https://www.youtube.com/live/XZM9UOg4b0U?si=tyJZva0FJu5Kz3zw&t=2190"
   },
   {
     "round": 13,
@@ -101,14 +105,16 @@
     "flag": "mx",
     "country": "MEXICO",
     "type": "FEATURE RACE",
-    "date": "2026-10-13"
+    "date": "2026-10-13",
+    "raceHighlights": "https://www.youtube.com/live/ctN_lSaEdIg?si=fe0kbNREOvEgDZbs&t=208"
   },
   {
     "round": 15,
     "flag": "br",
     "country": "BRAZIL",
     "type": "FEATURE RACE",
-    "date": "2026-10-14"
+    "date": "2026-10-14",
+    "raceHighlights": "https://www.youtube.com/live/91agBe4a_GM?si=sHYAnl2doQ_0337k&t=1814"
   },
   {
     "round": 16,
