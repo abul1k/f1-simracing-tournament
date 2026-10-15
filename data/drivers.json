@@ -176,7 +176,7 @@
   },
   {
     "id": "DRV026",
-    "name": "Muhammad Yusuf Xo",
+    "name": "MuhammadYusuf Xoldarov",
     "number": 28,
     "teamId": null,
     "country": "UZ"
@@ -213,6 +213,41 @@
     "id": "DRV031",
     "name": "Muhammad Raxim",
     "number": 33,
+    "teamId": null,
+    "country": "UZ"
+  },
+  {
+    "id": "DRV032",
+    "name": "Husniddin",
+    "number": 34,
+    "teamId": null,
+    "country": "UZ"
+  },
+  {
+    "id": "DRV033",
+    "name": "Allez Amanai",
+    "number": 35,
+    "teamId": null,
+    "country": "UZ"
+  },
+  {
+    "id": "DRV034",
+    "name": "Soibjon Olimov",
+    "number": 36,
+    "teamId": null,
+    "country": "UZ"
+  },
+  {
+    "id": "DRV035",
+    "name": "SNOWDEN",
+    "number": 37,
+    "teamId": null,
+    "country": "UZ"
+  },
+  {
+    "id": "DRV036",
+    "name": "Mohammed Avdol",
+    "number": 38,
     "teamId": null,
     "country": "UZ"
   }

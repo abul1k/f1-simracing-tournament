@@ -72,14 +72,14 @@
     "round": 10,
     "flag": "it",
     "country": "ITALY",
-    "type": "SPRINT RACE",
+    "type": "FEATURE RACE",
     "date": "2026-10-05"
   },
   {
     "round": 11,
     "flag": "sg",
     "country": "SINGAPORE",
-    "type": "SPRINT RACE",
+    "type": "FEATURE RACE",
     "date": "2026-10-05"
   },
   {
@@ -93,7 +93,7 @@
     "round": 13,
     "flag": "us",
     "country": "USA",
-    "type": "SPRINT RACE",
+    "type": "FEATURE RACE",
     "date": "2026-10-12"
   },
   {
