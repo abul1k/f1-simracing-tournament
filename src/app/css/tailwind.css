@@ -9,3 +9,37 @@
   --color-track-blue: #DD66FF;
   --color-lime: #CCFF00;
 }
+
+/*
+ * Slim scrollbar for panels that scroll sideways inside a card.
+ *
+ * The platform default brings a track and stepper arrows heavy enough to read
+ * as part of the chart sitting above it. This leaves a thin thumb on an empty
+ * track, so the bar says "there is more to the right" and nothing else.
+ *
+ * Both styling systems are set on purpose: `scrollbar-width` is the standard
+ * property (Firefox, and Chrome 121+ where it wins outright), while the
+ * `::-webkit-` rules cover older WebKit and Blink.
+ */
+@utility scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: #34343A transparent;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #34343A;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #45454C;
+  }
+}

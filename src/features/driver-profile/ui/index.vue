@@ -42,6 +42,21 @@ const maxPoints = computed(() =>
   history.value.reduce((max, entry) => Math.max(max, entry.cumulative), 0),
 )
 
+// Width one round needs on a chart: the bar (or pair of bars) at its drawn size
+// plus the gap that follows it. A full season outgrows the card, and the bars
+// are fixed-width, so without a floor here the paired chart pushed its card past
+// the edge of the row and scrolled the whole page sideways. At these widths the
+// charts scroll inside their own card instead, and only once they have to —
+// below the floor the columns still stretch to fill the card as before.
+const BAR_COLUMN = 34
+const PAIR_COLUMN = 44
+
+/** Floor width for the single-bar charts — finishing position, points. */
+const barChartWidth = computed(() => `${history.value.length * BAR_COLUMN}px`)
+
+/** Floor width for the qualifying-vs-race chart, which draws two bars a round. */
+const pairChartWidth = computed(() => `${history.value.length * PAIR_COLUMN}px`)
+
 const historyFields: TableField[] = [
   {
     key: 'label',
@@ -168,75 +183,87 @@ const positionLabel = (value: number | string | null) =>
 
       <div class="flex flex-col gap-4 xl:flex-row">
         <div
-          class="flex flex-1 flex-col gap-4 border border-[#2A2A2E] bg-[#141416] p-5"
+          class="flex min-w-0 flex-1 flex-col gap-4 border border-[#2A2A2E] bg-[#141416] p-5"
         >
           <h3 class="text-[12px] font-bold tracking-[0.4px] text-[#9C9CA1]">
             FINISHING POSITION BY ROUND
           </h3>
 
-          <div class="flex h-[160px] items-end justify-between gap-2">
-            <div
-              v-for="entry in history"
-              :key="entry.round"
-              class="flex h-[160px] flex-1 flex-col items-center justify-end gap-1.5"
-            >
-              <span class="font-mono text-[12px] font-bold text-[#F4F4F2]">
-                {{ positionLabel(entry.finish) }}
-              </span>
-              <div
-                class="w-[26px] bg-racing-red"
-                :style="{ height: `${positionHeight(entry.finish)}px` }"
-              ></div>
-            </div>
-          </div>
+          <div class="scroll-slim w-full overflow-x-auto pb-1">
+            <div class="flex flex-col gap-4" :style="{ minWidth: barChartWidth }">
+              <div class="flex h-[160px] items-end justify-between gap-2">
+                <div
+                  v-for="entry in history"
+                  :key="entry.round"
+                  class="flex h-[160px] flex-1 flex-col items-center justify-end gap-1.5"
+                >
+                  <span
+                    class="font-mono text-[12px] font-bold whitespace-nowrap text-[#F4F4F2]"
+                  >
+                    {{ positionLabel(entry.finish) }}
+                  </span>
+                  <div
+                    class="w-[26px] bg-racing-red"
+                    :style="{ height: `${positionHeight(entry.finish)}px` }"
+                  ></div>
+                </div>
+              </div>
 
-          <div class="flex justify-between">
-            <span
-              v-for="entry in history"
-              :key="entry.round"
-              class="flex-1 text-center text-[11px] font-semibold text-[#68686D]"
-            >
-              {{ entry.label }}
-            </span>
+              <div class="flex justify-between gap-2">
+                <span
+                  v-for="entry in history"
+                  :key="entry.round"
+                  class="flex-1 text-center text-[11px] font-semibold whitespace-nowrap text-[#68686D]"
+                >
+                  {{ entry.label }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div
-          class="flex flex-1 flex-col gap-4 border border-[#2A2A2E] bg-[#141416] p-5"
+          class="flex min-w-0 flex-1 flex-col gap-4 border border-[#2A2A2E] bg-[#141416] p-5"
         >
           <h3 class="text-[12px] font-bold tracking-[0.4px] text-[#9C9CA1]">
             POINTS ACCUMULATED
           </h3>
 
-          <div class="flex h-[160px] items-end justify-between gap-2">
-            <div
-              v-for="entry in history"
-              :key="entry.round"
-              class="flex h-[160px] flex-1 flex-col items-center justify-end gap-1.5"
-            >
-              <span class="font-mono text-[12px] font-bold text-[#F4F4F2]">
-                {{ entry.cumulative }}
-              </span>
-              <div
-                class="w-[26px] bg-[#4C8DC1]"
-                :style="{ height: `${valueHeight(entry.cumulative, maxPoints)}px` }"
-              ></div>
-            </div>
-          </div>
+          <div class="scroll-slim w-full overflow-x-auto pb-1">
+            <div class="flex flex-col gap-4" :style="{ minWidth: barChartWidth }">
+              <div class="flex h-[160px] items-end justify-between gap-2">
+                <div
+                  v-for="entry in history"
+                  :key="entry.round"
+                  class="flex h-[160px] flex-1 flex-col items-center justify-end gap-1.5"
+                >
+                  <span
+                    class="font-mono text-[12px] font-bold whitespace-nowrap text-[#F4F4F2]"
+                  >
+                    {{ entry.cumulative }}
+                  </span>
+                  <div
+                    class="w-[26px] bg-[#4C8DC1]"
+                    :style="{ height: `${valueHeight(entry.cumulative, maxPoints)}px` }"
+                  ></div>
+                </div>
+              </div>
 
-          <div class="flex justify-between">
-            <span
-              v-for="entry in history"
-              :key="entry.round"
-              class="flex-1 text-center text-[11px] font-semibold text-[#68686D]"
-            >
-              {{ entry.label }}
-            </span>
+              <div class="flex justify-between gap-2">
+                <span
+                  v-for="entry in history"
+                  :key="entry.round"
+                  class="flex-1 text-center text-[11px] font-semibold whitespace-nowrap text-[#68686D]"
+                >
+                  {{ entry.label }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div
-          class="flex flex-1 flex-col gap-3.5 border border-[#2A2A2E] bg-[#141416] p-5"
+          class="flex min-w-0 flex-1 flex-col gap-3.5 border border-[#2A2A2E] bg-[#141416] p-5"
         >
           <div class="flex items-center justify-between">
             <h3 class="text-[12px] font-bold tracking-[0.4px] text-[#9C9CA1]">
@@ -254,31 +281,35 @@ const positionLabel = (value: number | string | null) =>
             </div>
           </div>
 
-          <div class="flex h-[160px] items-end justify-between gap-2">
-            <div
-              v-for="entry in history"
-              :key="entry.round"
-              class="flex h-[160px] flex-1 items-end justify-center gap-1"
-            >
-              <div
-                class="w-4 bg-[#68686D]"
-                :style="{ height: `${positionHeight(entry.qualifying)}px` }"
-              ></div>
-              <div
-                class="w-4 bg-racing-red"
-                :style="{ height: `${positionHeight(entry.finish)}px` }"
-              ></div>
-            </div>
-          </div>
+          <div class="scroll-slim w-full overflow-x-auto pb-1">
+            <div class="flex flex-col gap-3.5" :style="{ minWidth: pairChartWidth }">
+              <div class="flex h-[160px] items-end justify-between gap-2">
+                <div
+                  v-for="entry in history"
+                  :key="entry.round"
+                  class="flex h-[160px] flex-1 items-end justify-center gap-1"
+                >
+                  <div
+                    class="w-4 bg-[#68686D]"
+                    :style="{ height: `${positionHeight(entry.qualifying)}px` }"
+                  ></div>
+                  <div
+                    class="w-4 bg-racing-red"
+                    :style="{ height: `${positionHeight(entry.finish)}px` }"
+                  ></div>
+                </div>
+              </div>
 
-          <div class="flex justify-between">
-            <span
-              v-for="entry in history"
-              :key="entry.round"
-              class="flex-1 text-center text-[11px] font-semibold text-[#68686D]"
-            >
-              {{ entry.label }}
-            </span>
+              <div class="flex justify-between gap-2">
+                <span
+                  v-for="entry in history"
+                  :key="entry.round"
+                  class="flex-1 text-center text-[11px] font-semibold whitespace-nowrap text-[#68686D]"
+                >
+                  {{ entry.label }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
